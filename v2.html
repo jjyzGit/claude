@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>House Sale Scenario Calculator v2</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --surface: #ffffff;
+      --bg: #f1f5f9;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --muted: #64748b;
+      --error: #dc2626;
+      --success: #16a34a;
+      --jj: #3b82f6;
+      --ng: #8b5cf6;
+      --bank: #f59e0b;
+      --radius: 10px;
+      --shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 1.5rem 1rem;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.875rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .card h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--primary);
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0.5rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    @media (max-width: 520px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .field.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    input.num-input {
+      width: 100%;
+      padding: 0.6rem 0.75rem;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      font-size: 1rem;
+      color: var(--text);
+      background: var(--bg);
+      transition: border-color 0.15s;
+    }
+
+    input.num-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: #fff;
+    }
+
+    input.num-input.invalid { border-color: var(--error); }
+
+    .derived-box {
+      background: var(--bg);
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 0.5rem 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .derived-item span:first-child {
+      display: block;
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .derived-item span:last-child {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .derived-item .neg { color: var(--error); }
+    .derived-item .pos { color: var(--success); }
+
+    .error-msg {
+      color: var(--error);
+      font-size: 0.82rem;
+      margin-top: 0.75rem;
+      display: none;
+    }
+
+    .error-msg.visible { display: block; }
+
+    .btn-row {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 0.65rem 1.4rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    button:active { transform: scale(0.97); }
+
+    #btn-calculate {
+      background: var(--primary);
+      color: #fff;
+      flex: 1;
+    }
+
+    #btn-calculate:hover { background: var(--primary-dark); }
+
+    #btn-export {
+      background: var(--border);
+      color: var(--text);
+    }
+
+    #btn-export:hover { background: #cbd5e1; }
+
+    #results { display: none; }
+
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.6rem;
+      border-radius: 99px;
+      background: #dcfce7;
+      color: var(--success);
+    }
+
+    .badge.warn { background: #fef9c3; color: #854d0e; }
+
+    /* Responsive table wrapper */
+    .table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 380px;
+      font-size: 0.9rem;
+    }
+
+    thead th {
+      background: var(--bg);
+      padding: 0.6rem 0.75rem;
+      text-align: left;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:last-child { border-bottom: none; }
+
+    tbody td {
+      padding: 0.65rem 0.75rem;
+      white-space: nowrap;
+    }
+
+    .scenario-label {
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .amount-jj { color: var(--jj); font-weight: 600; }
+    .amount-ng { color: var(--ng); font-weight: 600; }
+    .amount-bank { color: var(--bank); font-weight: 600; }
+    .amount-total { font-weight: 700; }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .toggle-row label {
+      font-size: 0.82rem;
+      text-transform: none;
+      letter-spacing: 0;
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    input[type="checkbox"] { accent-color: var(--primary); cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<h1>House Sale Scenario Calculator</h1>
+<p class="subtitle">Distribution breakdown — JJ &amp; NG &amp; Bank &nbsp;|&nbsp; Currency: ₪ ILS</p>
+
+<!-- INPUT CARD -->
+<div class="card">
+  <h2>Inputs</h2>
+  <div class="grid">
+    <div class="field full">
+      <label for="sale_price">Sale Price (₪)</label>
+      <input type="text" inputmode="numeric" class="num-input" id="sale_price" placeholder="e.g. 3,500,000" />
+    </div>
+    <div class="field full">
+      <label for="mortgage_outstanding">Mortgage Outstanding (₪)</label>
+      <input type="text" inputmode="numeric" class="num-input" id="mortgage_outstanding" placeholder="e.g. 800,000" />
+    </div>
+
+    <div class="field">
+      <label for="jj_principal">JJ Principal (₪)</label>
+      <input type="text" inputmode="numeric" class="num-input" id="jj_principal" placeholder="e.g. 600,000" />
+    </div>
+    <div class="field">
+      <label for="jj_parents">JJ Parents Contribution (₪)</label>
+      <input type="text" inputmode="numeric" class="num-input" id="jj_parents" placeholder="e.g. 200,000" />
+    </div>
+
+    <div class="field">
+      <label for="ng_principal">NG Principal (₪)</label>
+      <input type="text" inputmode="numeric" class="num-input" id="ng_principal" placeholder="e.g. 500,000" />
+    </div>
+    <div class="field">
+      <label for="ng_parents">NG Parents Contribution (₪)</label>
+      <input type="text" inputmode="numeric" class="num-input" id="ng_parents" placeholder="e.g. 150,000" />
+    </div>
+  </div>
+
+  <!-- Live derived values -->
+  <div class="derived-box" id="derived-box" style="display:none;">
+    <div class="derived-item">
+      <span>JJ Total Capital</span>
+      <span id="d-jj-cap">—</span>
+    </div>
+    <div class="derived-item">
+      <span>NG Total Capital</span>
+      <span id="d-ng-cap">—</span>
+    </div>
+    <div class="derived-item">
+      <span>Total Capital</span>
+      <span id="d-total-cap">—</span>
+    </div>
+    <div class="derived-item">
+      <span>Net After Mortgage</span>
+      <span id="d-net">—</span>
+    </div>
+    <div class="derived-item">
+      <span>Appreciation</span>
+      <span id="d-appr">—</span>
+    </div>
+  </div>
+
+  <p class="error-msg" id="error-msg">Please fill in all fields with valid numbers.</p>
+
+  <div class="btn-row" style="margin-top:1rem;">
+    <button id="btn-calculate">Calculate</button>
+    <button id="btn-export" style="display:none;">Export CSV</button>
+  </div>
+</div>
+
+<!-- RESULTS CARD -->
+<div class="card" id="results">
+  <div class="results-header">
+    <h2 style="margin-bottom:0; border:none; padding:0;">Scenario Results</h2>
+    <span class="badge" id="validation-badge">✓ Totals check out</span>
+  </div>
+
+  <div class="toggle-row">
+    <input type="checkbox" id="toggle-bank" checked />
+    <label for="toggle-bank">Show Bank column</label>
+  </div>
+
+  <div class="table-wrap" style="margin-top:0.75rem;">
+    <table id="results-table">
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th>JJ Share</th>
+          <th>NG Share</th>
+          <th class="col-bank">Bank Share</th>
+          <th>Total Distributed</th>
+        </tr>
+      </thead>
+      <tbody id="results-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── Formatters ── */
+  const ILS = new Intl.NumberFormat('he-IL', { style: 'currency', currency: 'ILS', maximumFractionDigits: 0 });
+  const fmt = v => ILS.format(Math.round(v));
+
+  /* ── Thousands input helpers ── */
+  function withCommas(n) {
+    if (isNaN(n)) return '';
+    return Math.round(n).toLocaleString('en-US');
+  }
+
+  function stripCommas(str) {
+    return parseFloat((str || '').replace(/,/g, ''));
+  }
+
+  /* ── DOM refs ── */
+  const $ = id => document.getElementById(id);
+  const inputIds = ['sale_price', 'mortgage_outstanding', 'jj_principal', 'jj_parents', 'ng_principal', 'ng_parents'];
+
+  /* ── Format inputs on blur / strip on focus ── */
+  inputIds.forEach(id => {
+    const el = $(id);
+
+    el.addEventListener('focus', () => {
+      const v = stripCommas(el.value);
+      if (!isNaN(v)) el.value = v;
+    });
+
+    el.addEventListener('blur', () => {
+      const v = stripCommas(el.value);
+      if (!isNaN(v) && el.value !== '') el.value = withCommas(v);
+    });
+
+    el.addEventListener('input', () => {
+      // Only allow digits, commas, and one dot
+      el.value = el.value.replace(/[^0-9.,]/g, '');
+      updateDerived();
+      if ($('results').style.display === 'block') handleCalculate();
+    });
+  });
+
+  /* ── getInputs ── */
+  function getInputs() {
+    const vals = {};
+    let valid = true;
+    inputIds.forEach(id => {
+      const el = $(id);
+      const v = stripCommas(el.value);
+      if (isNaN(v) || el.value.trim() === '' || (id === 'sale_price' && v < 0)) {
+        el.classList.add('invalid');
+        valid = false;
+      } else {
+        el.classList.remove('invalid');
+        vals[id] = v;
+      }
+    });
+    if (!valid) return null;
+
+    const jj_total = vals.jj_principal + vals.jj_parents;
+    const ng_total = vals.ng_principal + vals.ng_parents;
+    const total_capital = jj_total + ng_total;
+    const net_after_mortgage = vals.sale_price - vals.mortgage_outstanding;
+    const appreciation = net_after_mortgage - total_capital;
+
+    return {
+      sale_price: vals.sale_price,
+      mortgage: vals.mortgage_outstanding,
+      jj_principal: vals.jj_principal,
+      jj_parents: vals.jj_parents,
+      ng_principal: vals.ng_principal,
+      ng_parents: vals.ng_parents,
+      jj_total,
+      ng_total,
+      total_capital,
+      net_after_mortgage,
+      appreciation,
+    };
+  }
+
+  /* ── updateDerived (live preview) ── */
+  function updateDerived() {
+    const inp = getInputs();
+    if (!inp) { $('derived-box').style.display = 'none'; return; }
+
+    $('derived-box').style.display = '';
+    $('d-jj-cap').textContent = fmt(inp.jj_total);
+    $('d-ng-cap').textContent = fmt(inp.ng_total);
+    $('d-total-cap').textContent = fmt(inp.total_capital);
+    $('d-net').textContent = fmt(inp.net_after_mortgage);
+
+    const apEl = $('d-appr');
+    apEl.textContent = fmt(inp.appreciation);
+    apEl.className = inp.appreciation >= 0 ? 'pos' : 'neg';
+  }
+
+  /* ── Option A calculation ── */
+  function calculateOptionA(inp) {
+    const { mortgage, jj_total, ng_total, total_capital, net_after_mortgage, appreciation } = inp;
+    if (appreciation >= 0) {
+      const equal_half = appreciation / 2;
+      return {
+        jj: jj_total + equal_half,
+        ng: ng_total + equal_half,
+        bank: mortgage,
+      };
+    } else {
+      if (total_capital === 0) return { jj: 0, ng: 0, bank: mortgage };
+      const jj_ratio = jj_total / total_capital;
+      const ng_ratio = ng_total / total_capital;
+      return {
+        jj: net_after_mortgage * jj_ratio,
+        ng: net_after_mortgage * ng_ratio,
+        bank: mortgage,
+      };
+    }
+  }
+
+  /* ── renderResults ── */
+  function renderResults(inp, res) {
+    const tbody = $('results-body');
+    tbody.innerHTML = '';
+
+    const total = res.jj + res.ng + res.bank;
+    const diff = Math.abs(total - inp.sale_price);
+    const allValid = diff <= 1;
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><div class="scenario-label">Capital returned first, appreciation 50/50</div></td>
+      <td class="amount-jj">${fmt(res.jj)}</td>
+      <td class="amount-ng">${fmt(res.ng)}</td>
+      <td class="col-bank amount-bank">${fmt(res.bank)}</td>
+      <td class="amount-total">${fmt(total)}</td>
+    `;
+    tbody.appendChild(tr);
+
+    const badge = $('validation-badge');
+    if (allValid) {
+      badge.textContent = '✓ Totals check out';
+      badge.className = 'badge';
+    } else {
+      badge.textContent = '⚠ Rounding mismatch';
+      badge.className = 'badge warn';
+    }
+
+    $('results').dataset.lastResults = JSON.stringify({ inp, res });
+  }
+
+  /* ── Main calculate handler ── */
+  function handleCalculate() {
+    const err = $('error-msg');
+    const inp = getInputs();
+
+    if (!inp) {
+      err.classList.add('visible');
+      return;
+    }
+    err.classList.remove('visible');
+
+    const res = calculateOptionA(inp);
+    renderResults(inp, res);
+
+    const resultCard = $('results');
+    resultCard.style.display = 'block';
+    $('btn-export').style.display = '';
+    resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* ── CSV export ── */
+  function handleExport() {
+    const raw = $('results').dataset.lastResults;
+    if (!raw) return;
+    const { inp, res } = JSON.parse(raw);
+
+    const header = ['Scenario', 'JJ Share (ILS)', 'NG Share (ILS)', 'Bank Share (ILS)', 'Total Distributed (ILS)'];
+    const total = Math.round(res.jj + res.ng + res.bank);
+    const dataRow = ['Capital returned first, appreciation 50/50', Math.round(res.jj), Math.round(res.ng), Math.round(res.bank), total];
+
+    const metaRows = [
+      ['Sale Price', Math.round(inp.sale_price)],
+      ['Mortgage Outstanding', Math.round(inp.mortgage)],
+      ['JJ Total Capital', Math.round(inp.jj_total)],
+      ['NG Total Capital', Math.round(inp.ng_total)],
+      ['Net After Mortgage', Math.round(inp.net_after_mortgage)],
+      ['Appreciation', Math.round(inp.appreciation)],
+    ];
+
+    const lines = [
+      header.join(','),
+      dataRow.join(','),
+      '',
+      'Input Summary',
+      ...metaRows.map(r => r.join(',')),
+    ];
+
+    const blob = new Blob([lines.join('\r\n')], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'house_sale_scenario.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  /* ── Toggle bank column ── */
+  function handleToggleBank() {
+    const show = $('toggle-bank').checked;
+    document.querySelectorAll('.col-bank').forEach(el => {
+      el.style.display = show ? '' : 'none';
+    });
+  }
+
+  /* ── Wire up events ── */
+  $('btn-calculate').addEventListener('click', handleCalculate);
+  $('btn-export').addEventListener('click', handleExport);
+  $('toggle-bank').addEventListener('change', handleToggleBank);
+
+})();
+</script>
+</body>
+</html>
