@@ -118,6 +118,42 @@
     }
     input.num-input.invalid { border-color: var(--error); }
 
+    /* ── Mode selector ── */
+    .mode-selector {
+      display: flex;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .mode-opt { flex: 1; }
+    .mode-opt input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0; height: 0;
+    }
+    .mode-opt label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.6rem 0.75rem;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      background: var(--bg);
+      transition: background 0.15s, color 0.15s;
+      text-transform: none;
+      letter-spacing: 0;
+      border-right: 1.5px solid var(--border);
+      text-align: center;
+      width: 100%;
+    }
+    .mode-opt:last-child label { border-right: none; }
+    .mode-opt input[type="radio"]:checked + label {
+      background: var(--primary);
+      color: #fff;
+    }
+
     /* ── Derived box ── */
     .derived-box {
       background: var(--bg);
@@ -321,9 +357,26 @@
       <label for="ng_capital">NG Capital (₪) — principal + family gifts</label>
       <input type="text" inputmode="numeric" class="num-input" id="ng_capital" placeholder="e.g. 1,700,000" />
     </div>
-    <div class="field">
+    <div class="field full">
+      <label>Solve By</label>
+      <div class="mode-selector">
+        <div class="mode-opt">
+          <input type="radio" name="solve_mode" id="mode-proceeds" value="proceeds" checked />
+          <label for="mode-proceeds">Target JJ Proceeds (₪)</label>
+        </div>
+        <div class="mode-opt">
+          <input type="radio" name="solve_mode" id="mode-weight" value="weight" />
+          <label for="mode-weight">Hybrid Equal Weight (%)</label>
+        </div>
+      </div>
+    </div>
+    <div class="field" id="field-proceeds">
       <label for="target_jj_proceeds">Target JJ Proceeds (₪)</label>
       <input type="text" inputmode="numeric" class="num-input" id="target_jj_proceeds" placeholder="e.g. 2,650,000" />
+    </div>
+    <div class="field" id="field-weight" style="display:none;">
+      <label for="target_hybrid_weight">Hybrid Equal Weight (0 – 100%)</label>
+      <input type="text" inputmode="numeric" class="num-input" id="target_hybrid_weight" placeholder="e.g. 50" />
     </div>
     <div class="field">
       <label for="rounding">Rounding</label>
@@ -437,7 +490,7 @@
   ───────────────────────────────────────── */
   const numInputIds = [
     'sale_price', 'mortgage_outstanding',
-    'jj_capital', 'ng_capital', 'target_jj_proceeds',
+    'jj_capital', 'ng_capital',
   ];
 
   const DEFAULTS = {
@@ -446,9 +499,10 @@
     jj_capital: 690000,
     ng_capital: 1700000,
     target_jj_proceeds: 2650000,
+    target_hybrid_weight: 50,
   };
 
-  numInputIds.forEach(id => {
+  [...numInputIds, 'target_jj_proceeds', 'target_hybrid_weight'].forEach(id => {
     const el = $(id);
     el.value = withCommas(DEFAULTS[id]);
 
@@ -467,6 +521,18 @@
   });
 
   $('rounding').addEventListener('change', updateDerived);
+
+  /* ── Mode switching ── */
+  function getMode() {
+    return document.querySelector('input[name="solve_mode"]:checked').value;
+  }
+  document.querySelectorAll('input[name="solve_mode"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const mode = getMode();
+      $('field-proceeds').style.display = mode === 'proceeds' ? '' : 'none';
+      $('field-weight').style.display   = mode === 'weight'   ? '' : 'none';
+    });
+  });
 
   /* ─────────────────────────────────────────
      Rounding helper
@@ -493,6 +559,26 @@
         vals[id] = v;
       }
     });
+
+    const mode = getMode();
+    if (mode === 'proceeds') {
+      const el = $('target_jj_proceeds');
+      const v = stripCommas(el.value);
+      if (isNaN(v) || el.value.trim() === '' || v < 0) {
+        el.classList.add('invalid'); valid = false;
+      } else {
+        el.classList.remove('invalid'); vals.target_jj_proceeds = v;
+      }
+    } else {
+      const el = $('target_hybrid_weight');
+      const v = stripCommas(el.value);
+      if (isNaN(v) || el.value.trim() === '' || v < 0 || v > 100) {
+        el.classList.add('invalid'); valid = false;
+      } else {
+        el.classList.remove('invalid'); vals.target_hybrid_weight = v;
+      }
+    }
+
     if (!valid) return null;
 
     const net_equity    = vals.sale_price - vals.mortgage_outstanding;
@@ -503,11 +589,13 @@
     const roundFactor   = parseInt($('rounding').value, 10);
 
     return {
-      sale_price:  vals.sale_price,
-      mortgage:    vals.mortgage_outstanding,
-      jj_capital:  vals.jj_capital,
-      ng_capital:  vals.ng_capital,
-      target:      vals.target_jj_proceeds,
+      sale_price:   vals.sale_price,
+      mortgage:     vals.mortgage_outstanding,
+      jj_capital:   vals.jj_capital,
+      ng_capital:   vals.ng_capital,
+      target:       mode === 'proceeds' ? vals.target_jj_proceeds : null,
+      targetWeight: mode === 'weight'   ? vals.target_hybrid_weight / 100 : null,
+      mode,
       net_equity,
       total_capital,
       appreciation,
@@ -665,11 +753,11 @@
       const jjR         = applyRound(r.jj,   R);
       const ngR         = applyRound(r.ng,   R);
       const bankR       = applyRound(r.bank, R);
-      const deltaTarget = jjR - inp.target;
+      const deltaTarget = inp.mode === 'proceeds' ? jjR - inp.target : null;
       const deltaA      = opt.id === 'A' ? null : jjR - jjA;
       const isBest      = opt.id === best.id;
 
-      const dtClass = Math.abs(deltaTarget) < 1
+      const dtClass = deltaTarget === null || Math.abs(deltaTarget) < 1
         ? 'delta-zero'
         : deltaTarget > 0 ? 'delta-pos' : 'delta-neg';
 
@@ -690,53 +778,75 @@
         <td class="amount-jj">${fmt(jjR)}</td>
         <td class="amount-ng">${fmt(ngR)}</td>
         <td class="amount-bank">${fmt(bankR)}</td>
-        <td class="${dtClass}">${fmtDelta(deltaTarget)}</td>
+        <td class="${dtClass}">${deltaTarget === null ? '—' : fmtDelta(deltaTarget)}</td>
         <td class="${daClass}">${deltaA === null ? '—' : fmtDelta(deltaA)}</td>
       `;
       tbody.appendChild(tr);
     });
 
     /* ── Recommendation card ── */
-    const bestRes        = best.res;
-    const bestJJ         = applyRound(bestRes.jj, R);
-    const bestNG         = applyRound(bestRes.ng, R);
-    const bestDeltaT     = bestJJ - inp.target;
-    const bestDeltaClass = Math.abs(bestDeltaT) < 1
-      ? 'delta-zero'
-      : bestDeltaT > 0 ? 'delta-pos' : 'delta-neg';
+    const bestRes = best.res;
+    const bestJJ  = applyRound(bestRes.jj, R);
+    const bestNG  = applyRound(bestRes.ng, R);
+    let recHTML;
 
-    let recHTML = `<div class="rec-grid">
-      <div class="rec-item">
-        <div class="rec-label">Best Match</div>
-        <div class="rec-val rec-teal">${best.name}</div>
-      </div>
-      <div class="rec-item">
-        <div class="rec-label">JJ Proceeds</div>
-        <div class="rec-val rec-jj">${fmt(bestJJ)}</div>
-      </div>
-      <div class="rec-item">
-        <div class="rec-label">NG Proceeds</div>
-        <div class="rec-val rec-ng">${fmt(bestNG)}</div>
-      </div>
-      <div class="rec-item">
-        <div class="rec-label">JJ Δ vs Target</div>
-        <div class="rec-val ${bestDeltaClass}">${fmtDelta(bestDeltaT)}</div>
+    if (inp.mode === 'weight') {
+      // Weight mode: show Option C result directly
+      $('rec-card').querySelector('h2').textContent = 'Option C — Hybrid Result';
+      recHTML = `<div class="rec-grid">
+        <div class="rec-item">
+          <div class="rec-label">Equal Weight (x)</div>
+          <div class="rec-val rec-teal">${pct1(inp.targetWeight)}</div>
+        </div>
+        <div class="rec-item">
+          <div class="rec-label">JJ Proceeds</div>
+          <div class="rec-val rec-jj">${fmt(bestJJ)}</div>
+        </div>
+        <div class="rec-item">
+          <div class="rec-label">NG Proceeds</div>
+          <div class="rec-val rec-ng">${fmt(bestNG)}</div>
+        </div>
       </div>`;
+      if (bestRes.note) recHTML += `<div class="rec-note">${bestRes.note}</div>`;
+    } else {
+      // Proceeds mode: best-match recommendation
+      $('rec-card').querySelector('h2').textContent = 'Recommendation';
+      const bestDeltaT     = bestJJ - inp.target;
+      const bestDeltaClass = Math.abs(bestDeltaT) < 1
+        ? 'delta-zero'
+        : bestDeltaT > 0 ? 'delta-pos' : 'delta-neg';
 
-    if (best.id === 'C' && solveResult) {
-      recHTML += `
-      <div class="rec-item">
-        <div class="rec-label">Hybrid Equal Weight (x)</div>
-        <div class="rec-val rec-teal">${pct1(solveResult.x)}</div>
-      </div>`;
-    }
-    recHTML += '</div>';
+      recHTML = `<div class="rec-grid">
+        <div class="rec-item">
+          <div class="rec-label">Best Match</div>
+          <div class="rec-val rec-teal">${best.name}</div>
+        </div>
+        <div class="rec-item">
+          <div class="rec-label">JJ Proceeds</div>
+          <div class="rec-val rec-jj">${fmt(bestJJ)}</div>
+        </div>
+        <div class="rec-item">
+          <div class="rec-label">NG Proceeds</div>
+          <div class="rec-val rec-ng">${fmt(bestNG)}</div>
+        </div>
+        <div class="rec-item">
+          <div class="rec-label">JJ Δ vs Target</div>
+          <div class="rec-val ${bestDeltaClass}">${fmtDelta(bestDeltaT)}</div>
+        </div>`;
 
-    if (best.id === 'C' && solveResult?.clamped) {
-      recHTML += `<div class="warn-box">⚠ Target is outside the feasible range for the hybrid mechanism (x_raw = ${solveResult.x_raw.toFixed(4)}). Showing nearest boundary: x = ${pct1(solveResult.x)}.</div>`;
-    }
-    if (bestRes.note) {
-      recHTML += `<div class="rec-note">${bestRes.note}</div>`;
+      if (best.id === 'C' && solveResult) {
+        recHTML += `
+        <div class="rec-item">
+          <div class="rec-label">Hybrid Equal Weight (x)</div>
+          <div class="rec-val rec-teal">${pct1(solveResult.x)}</div>
+        </div>`;
+      }
+      recHTML += '</div>';
+
+      if (best.id === 'C' && solveResult?.clamped) {
+        recHTML += `<div class="warn-box">⚠ Target is outside the feasible range for the hybrid mechanism (x_raw = ${solveResult.x_raw.toFixed(4)}). Showing nearest boundary: x = ${pct1(solveResult.x)}.</div>`;
+      }
+      if (bestRes.note) recHTML += `<div class="rec-note">${bestRes.note}</div>`;
     }
     $('rec-content').innerHTML = recHTML;
 
@@ -809,9 +919,22 @@ NG = net_equity × NG_ratio  =  ${fmt(net_equity)} × ${pct(ng_ratio)}  =  ${fmt
 NG = net_equity × NG_ratio  =  ${fmt(net_equity)} × ${pct(ng_ratio)}  =  ${fmt(ngBr)}</div>
     </div>`;
 
-    /* Option C — Hybrid solver */
-    html += `<div class="explain-section"><h3>Option C — Hybrid Solver (x% equal, (1−x)% pro-rata on appreciation)</h3>`;
-    if (appreciation > 0 && solveResult) {
+    /* Option C — Hybrid */
+    html += `<div class="explain-section"><h3>Option C — Hybrid (x% equal, (1−x)% pro-rata on appreciation)</h3>`;
+    if (inp.mode === 'weight' && appreciation > 0) {
+      // Weight specified directly — show forward calculation only
+      const x = solveResult.x;
+      html += `<div class="math-box">Equal weight specified directly: x = ${pct1(x)}
+
+JJ = JJ_capital + A × (x·0.5 + (1−x)·r)
+   = ${fmt(jj_capital)} + ${fmt(appreciation)} × (${x.toFixed(4)}·0.5 + ${(1-x).toFixed(4)}·${jj_ratio.toFixed(4)})
+   = ${fmt(jjCr)}
+
+NG = NG_capital + A × (x·0.5 + (1−x)·ng_ratio)
+   = ${fmt(ng_capital)} + ${fmt(appreciation)} × (${x.toFixed(4)}·0.5 + ${(1-x).toFixed(4)}·${ng_ratio.toFixed(4)})
+   = ${fmt(ngCr)}</div>`;
+    } else if (appreciation > 0 && solveResult && !solveResult.direct) {
+      // Proceeds mode — show full solver derivation
       const x     = solveResult.x;
       const x_raw = solveResult.x_raw;
       const ta    = target - jj_capital;
@@ -840,13 +963,13 @@ NG = NG_capital + A × (x·0.5 + (1−x)·ng_ratio)
         html += `<div class="warn-box">⚠ x_raw = ${x_raw.toFixed(4)} lies outside [0, 1]. Target is outside the feasible range for the hybrid mechanism. Result shown at nearest boundary x = ${pct1(x)}.</div>`;
       }
     } else if (appreciation <= 0) {
-      html += `<div class="math-box">Appreciation ≤ 0 — Hybrid solver not applicable.
+      html += `<div class="math-box">Appreciation ≤ 0 — Hybrid not applicable.
 Fallback: pro-rata on net equity (identical to Option B).
 
 JJ = net_equity × JJ_ratio  =  ${fmt(net_equity)} × ${pct(jj_ratio)}  =  ${fmt(jjCr)}
 NG = net_equity × NG_ratio  =  ${fmt(net_equity)} × ${pct(ng_ratio)}  =  ${fmt(ngCr)}</div>`;
     } else {
-      html += `<div class="math-box">Cannot solve analytically (JJ capital ratio = 50% — any x yields the same JJ result).
+      html += `<div class="math-box">Cannot solve analytically (JJ capital ratio = 50% — any x yields the same result).
 Defaulting to x = 50%.</div>`;
     }
     html += `</div>`;
@@ -877,12 +1000,20 @@ Check: JJ + NG + Bank  =  ${fmt(jjDr + ngDr + bkDr)}</div>
     if (!inp) { err.classList.add('visible'); return; }
     err.classList.remove('visible');
 
-    const resA        = calcOptionA(inp);
-    const resB        = calcOptionB(inp);
-    const solveResult = solveHybridWeightX(inp);
-    const xToUse      = solveResult ? solveResult.x : 0.5;
-    const resC        = calcOptionCHybrid(inp, xToUse);
-    const resD        = calcOptionD(inp);
+    const resA = calcOptionA(inp);
+    const resB = calcOptionB(inp);
+    const resD = calcOptionD(inp);
+
+    let solveResult, xToUse;
+    if (inp.mode === 'proceeds') {
+      solveResult = solveHybridWeightX(inp);
+      xToUse      = solveResult ? solveResult.x : 0.5;
+    } else {
+      xToUse      = inp.targetWeight;
+      solveResult = { x: xToUse, x_raw: xToUse, clamped: false, direct: true };
+    }
+
+    const resC = calcOptionCHybrid(inp, xToUse);
 
     const allOptions = [
       {
@@ -899,9 +1030,11 @@ Check: JJ + NG + Bank  =  ${fmt(jjDr + ngDr + bkDr)}</div>
       },
       {
         id: 'C', name: 'Option C',
-        desc: solveResult
-          ? `Hybrid — x = ${pct1(solveResult.x)} equal${solveResult.clamped ? ' ⚠ clamped' : ''}`
-          : 'Hybrid (N/A — appreciation ≤ 0, fallback to pro-rata)',
+        desc: inp.mode === 'weight'
+          ? `Hybrid — x = ${pct1(xToUse)} equal (specified directly)`
+          : solveResult
+            ? `Hybrid — x = ${pct1(solveResult.x)} equal${solveResult.clamped ? ' ⚠ clamped' : ''}`
+            : 'Hybrid (N/A — appreciation ≤ 0, fallback to pro-rata)',
         res: resC,
       },
       {
@@ -911,7 +1044,10 @@ Check: JJ + NG + Bank  =  ${fmt(jjDr + ngDr + bkDr)}</div>
       },
     ];
 
-    const best = recommendBestOption(allOptions, inp.target);
+    const best = inp.mode === 'proceeds'
+      ? recommendBestOption(allOptions, inp.target)
+      : allOptions.find(o => o.id === 'C');
+
     renderResults(inp, allOptions, solveResult, best);
   }
 
