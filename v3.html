@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>House Proceeds Reverse Solver (JJ) — v3</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:      #2563eb;
+      --primary-dark: #1d4ed8;
+      --surface:      #ffffff;
+      --bg:           #f1f5f9;
+      --border:       #e2e8f0;
+      --text:         #1e293b;
+      --muted:        #64748b;
+      --error:        #dc2626;
+      --success:      #16a34a;
+      --jj:           #3b82f6;
+      --ng:           #8b5cf6;
+      --bank:         #d97706;
+      --teal:         #0f766e;
+      --radius:       10px;
+      --shadow:       0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.875rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .card h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--primary);
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0.5rem;
+    }
+
+    .rec-card {
+      border-left: 4px solid var(--teal);
+    }
+    .rec-card h2 { color: var(--teal); }
+
+    /* ── Grid ── */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 600px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    .field { display: flex; flex-direction: column; gap: 0.3rem; }
+    .field.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    input.num-input,
+    select.sel-input {
+      width: 100%;
+      padding: 0.6rem 0.75rem;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      font-size: 1rem;
+      color: var(--text);
+      background: var(--bg);
+      transition: border-color 0.15s;
+      font-family: inherit;
+    }
+    input.num-input:focus,
+    select.sel-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: #fff;
+    }
+    input.num-input.invalid { border-color: var(--error); }
+
+    /* ── Derived box ── */
+    .derived-box {
+      background: var(--bg);
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 0.5rem 1rem;
+      margin-top: 1rem;
+    }
+    .derived-item span:first-child {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .derived-item span.val {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .neg { color: var(--error); }
+    .pos { color: var(--success); }
+
+    .error-msg {
+      color: var(--error);
+      font-size: 0.82rem;
+      margin-top: 0.75rem;
+      display: none;
+    }
+    .error-msg.visible { display: block; }
+
+    .btn-row {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.25rem;
+    }
+
+    button#btn-calculate {
+      padding: 0.7rem 1.6rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--primary);
+      color: #fff;
+      flex: 1;
+      transition: background 0.15s, transform 0.1s;
+    }
+    button#btn-calculate:hover { background: var(--primary-dark); }
+    button#btn-calculate:active { transform: scale(0.97); }
+
+    /* ── Recommendation card ── */
+    .rec-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+      gap: 0.75rem 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .rec-item .rec-label {
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .rec-item .rec-val {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    .rec-teal  { color: var(--teal); }
+    .rec-jj    { color: var(--jj); }
+    .rec-ng    { color: var(--ng); }
+    .rec-note {
+      font-size: 0.82rem;
+      color: var(--muted);
+      background: var(--bg);
+      border-left: 3px solid var(--teal);
+      padding: 0.45rem 0.75rem;
+      border-radius: 0 6px 6px 0;
+      margin-top: 0.5rem;
+    }
+    .warn-box {
+      font-size: 0.8rem;
+      color: #854d0e;
+      background: #fef9c3;
+      border-radius: 6px;
+      padding: 0.45rem 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    /* ── Table ── */
+    .table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+      font-size: 0.88rem;
+    }
+    thead th {
+      background: var(--bg);
+      padding: 0.6rem 0.75rem;
+      text-align: left;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr.best-row { background: #f0fdf4; }
+    tbody td { padding: 0.65rem 0.75rem; white-space: nowrap; }
+
+    .opt-name { font-weight: 600; font-size: 0.85rem; }
+    .opt-desc { font-size: 0.7rem; color: var(--muted); margin-top: 0.1rem; }
+    .amount-jj   { color: var(--jj);  font-weight: 600; }
+    .amount-ng   { color: var(--ng);  font-weight: 600; }
+    .amount-bank { color: var(--bank); font-weight: 600; }
+    .amount-total { font-weight: 700; }
+
+    .delta-pos  { color: var(--success); font-weight: 600; }
+    .delta-neg  { color: var(--error);   font-weight: 600; }
+    .delta-zero { color: var(--muted);   font-weight: 600; }
+
+    .best-badge {
+      display: inline-block;
+      font-size: 0.62rem;
+      font-weight: 700;
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      background: #dcfce7;
+      color: var(--success);
+      margin-left: 0.35rem;
+      vertical-align: middle;
+    }
+
+    /* ── Explanation ── */
+    .explain-section { margin-bottom: 1.5rem; }
+    .explain-section:last-child { margin-bottom: 0; }
+    .explain-section h3 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .explain-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: baseline;
+      flex-wrap: wrap;
+      margin-bottom: 0.2rem;
+      font-size: 0.84rem;
+    }
+    .explain-key {
+      color: var(--muted);
+      min-width: 230px;
+      flex-shrink: 0;
+    }
+    .explain-val { font-weight: 600; }
+    .math-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      font-family: "Courier New", monospace;
+      font-size: 0.78rem;
+      line-height: 1.85;
+      margin-top: 0.5rem;
+      overflow-x: auto;
+      white-space: pre;
+    }
+  </style>
+</head>
+<body>
+
+<h1>House Proceeds Reverse Solver</h1>
+<p class="subtitle">Compute JJ proceeds across all mechanisms &amp; reverse-solve the optimal hybrid split &nbsp;|&nbsp; ₪ ILS</p>
+
+<!-- ── INPUTS ── -->
+<div class="card">
+  <h2>Inputs</h2>
+  <div class="grid-2">
+    <div class="field">
+      <label for="sale_price">Sale Price (₪)</label>
+      <input type="text" inputmode="numeric" class="num-input" id="sale_price" placeholder="e.g. 9,000,000" />
+    </div>
+    <div class="field">
+      <label for="mortgage_outstanding">Mortgage Outstanding (₪)</label>
+      <input type="text" inputmode="numeric" class="num-input" id="mortgage_outstanding" placeholder="e.g. 2,300,000" />
+    </div>
+    <div class="field">
+      <label for="jj_capital">JJ Capital (₪) — principal + family gifts</label>
+      <input type="text" inputmode="numeric" class="num-input" id="jj_capital" placeholder="e.g. 690,000" />
+    </div>
+    <div class="field">
+      <label for="ng_capital">NG Capital (₪) — principal + family gifts</label>
+      <input type="text" inputmode="numeric" class="num-input" id="ng_capital" placeholder="e.g. 1,700,000" />
+    </div>
+    <div class="field">
+      <label for="target_jj_proceeds">Target JJ Proceeds (₪)</label>
+      <input type="text" inputmode="numeric" class="num-input" id="target_jj_proceeds" placeholder="e.g. 2,650,000" />
+    </div>
+    <div class="field">
+      <label for="rounding">Rounding</label>
+      <select class="sel-input" id="rounding">
+        <option value="1">Nearest ₪1</option>
+        <option value="10">Nearest ₪10</option>
+        <option value="100">Nearest ₪100</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Live derived values -->
+  <div class="derived-box" id="derived-box" style="display:none;">
+    <div class="derived-item">
+      <span>Net Equity</span>
+      <span class="val" id="d-net">—</span>
+    </div>
+    <div class="derived-item">
+      <span>Total Capital</span>
+      <span class="val" id="d-total-cap">—</span>
+    </div>
+    <div class="derived-item">
+      <span>Appreciation</span>
+      <span class="val" id="d-appr">—</span>
+    </div>
+    <div class="derived-item">
+      <span>JJ Capital Ratio</span>
+      <span class="val" id="d-jj-ratio">—</span>
+    </div>
+    <div class="derived-item">
+      <span>NG Capital Ratio</span>
+      <span class="val" id="d-ng-ratio">—</span>
+    </div>
+  </div>
+
+  <p class="error-msg" id="error-msg">Please fill in all fields with valid non-negative numbers.</p>
+  <div class="btn-row">
+    <button id="btn-calculate">Solve &amp; Calculate</button>
+  </div>
+</div>
+
+<!-- ── RESULTS ── -->
+<div id="results" style="display:none;">
+
+  <!-- Recommendation -->
+  <div class="card rec-card">
+    <h2>Recommendation</h2>
+    <div id="rec-content"></div>
+  </div>
+
+  <!-- All scenarios table -->
+  <div class="card">
+    <h2>All Scenarios</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Option</th>
+            <th>JJ Proceeds (₪)</th>
+            <th>NG Proceeds (₪)</th>
+            <th>Bank (₪)</th>
+            <th>JJ Δ vs Target</th>
+            <th>JJ Δ vs Option A</th>
+          </tr>
+        </thead>
+        <tbody id="results-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Math explanation -->
+  <div class="card">
+    <h2>How It Was Solved</h2>
+    <div id="explanation"></div>
+  </div>
+
+</div><!-- #results -->
+
+<script>
+(function () {
+  'use strict';
+
+  /* ─────────────────────────────────────────
+     Formatters
+  ───────────────────────────────────────── */
+  const ILS = new Intl.NumberFormat('he-IL', {
+    style: 'currency', currency: 'ILS', maximumFractionDigits: 0,
+  });
+  const fmt      = v => ILS.format(Math.round(v));
+  const fmtDelta = v => (v >= 0 ? '+' : '') + ILS.format(Math.round(v));
+  const pct      = v => (v * 100).toFixed(2) + '%';
+  const pct1     = v => (v * 100).toFixed(1) + '%';
+
+  /* ─────────────────────────────────────────
+     DOM helper
+  ───────────────────────────────────────── */
+  const $ = id => document.getElementById(id);
+
+  /* ─────────────────────────────────────────
+     Thousands-separator input helpers
+  ───────────────────────────────────────── */
+  function withCommas(n) {
+    return isNaN(n) ? '' : Math.round(n).toLocaleString('en-US');
+  }
+  function stripCommas(str) {
+    return parseFloat((str || '').replace(/,/g, ''));
+  }
+
+  /* ─────────────────────────────────────────
+     Inputs setup & defaults
+  ───────────────────────────────────────── */
+  const numInputIds = [
+    'sale_price', 'mortgage_outstanding',
+    'jj_capital', 'ng_capital', 'target_jj_proceeds',
+  ];
+
+  const DEFAULTS = {
+    sale_price: 9000000,
+    mortgage_outstanding: 2300000,
+    jj_capital: 690000,
+    ng_capital: 1700000,
+    target_jj_proceeds: 2650000,
+  };
+
+  numInputIds.forEach(id => {
+    const el = $(id);
+    el.value = withCommas(DEFAULTS[id]);
+
+    el.addEventListener('focus', () => {
+      const v = stripCommas(el.value);
+      if (!isNaN(v)) el.value = v;
+    });
+    el.addEventListener('blur', () => {
+      const v = stripCommas(el.value);
+      if (!isNaN(v) && el.value.trim() !== '') el.value = withCommas(v);
+    });
+    el.addEventListener('input', () => {
+      el.value = el.value.replace(/[^0-9.,]/g, '');
+      updateDerived();
+    });
+  });
+
+  $('rounding').addEventListener('change', updateDerived);
+
+  /* ─────────────────────────────────────────
+     Rounding helper
+  ───────────────────────────────────────── */
+  function applyRound(v, factor) {
+    return Math.round(v / factor) * factor;
+  }
+
+  /* ─────────────────────────────────────────
+     getInputs()
+  ───────────────────────────────────────── */
+  function getInputs() {
+    const vals = {};
+    let valid = true;
+
+    numInputIds.forEach(id => {
+      const el = $(id);
+      const v = stripCommas(el.value);
+      if (isNaN(v) || el.value.trim() === '' || v < 0) {
+        el.classList.add('invalid');
+        valid = false;
+      } else {
+        el.classList.remove('invalid');
+        vals[id] = v;
+      }
+    });
+    if (!valid) return null;
+
+    const net_equity    = vals.sale_price - vals.mortgage_outstanding;
+    const total_capital = vals.jj_capital + vals.ng_capital;
+    const appreciation  = net_equity - total_capital;
+    const jj_ratio      = total_capital > 0 ? vals.jj_capital / total_capital : 0;
+    const ng_ratio      = total_capital > 0 ? vals.ng_capital / total_capital : 0;
+    const roundFactor   = parseInt($('rounding').value, 10);
+
+    return {
+      sale_price:  vals.sale_price,
+      mortgage:    vals.mortgage_outstanding,
+      jj_capital:  vals.jj_capital,
+      ng_capital:  vals.ng_capital,
+      target:      vals.target_jj_proceeds,
+      net_equity,
+      total_capital,
+      appreciation,
+      jj_ratio,
+      ng_ratio,
+      roundFactor,
+    };
+  }
+
+  /* ─────────────────────────────────────────
+     Live derived values
+  ───────────────────────────────────────── */
+  function updateDerived() {
+    const inp = getInputs();
+    if (!inp) { $('derived-box').style.display = 'none'; return; }
+
+    $('derived-box').style.display = '';
+    $('d-net').textContent       = fmt(inp.net_equity);
+    $('d-total-cap').textContent = fmt(inp.total_capital);
+    $('d-jj-ratio').textContent  = pct(inp.jj_ratio);
+    $('d-ng-ratio').textContent  = pct(inp.ng_ratio);
+
+    const apEl = $('d-appr');
+    apEl.textContent = fmt(inp.appreciation);
+    apEl.className   = 'val ' + (inp.appreciation >= 0 ? 'pos' : 'neg');
+  }
+
+  /* ─────────────────────────────────────────
+     calcOptionA()
+     Capital returned first; appreciation 50/50.
+     Negative appreciation → pro-rata on net equity.
+  ───────────────────────────────────────── */
+  function calcOptionA(inp) {
+    const { mortgage, jj_capital, ng_capital, net_equity, appreciation, jj_ratio, ng_ratio } = inp;
+    if (appreciation >= 0) {
+      return {
+        jj:   jj_capital + appreciation * 0.5,
+        ng:   ng_capital + appreciation * 0.5,
+        bank: mortgage,
+      };
+    }
+    return {
+      jj:   net_equity * jj_ratio,
+      ng:   net_equity * ng_ratio,
+      bank: mortgage,
+      note: 'Appreciation < 0 — pro-rata fallback applied',
+    };
+  }
+
+  /* ─────────────────────────────────────────
+     calcOptionB()
+     Pure pro-rata on net equity after bank repayment.
+  ───────────────────────────────────────── */
+  function calcOptionB(inp) {
+    const { mortgage, net_equity, jj_ratio, ng_ratio } = inp;
+    return {
+      jj:   net_equity * jj_ratio,
+      ng:   net_equity * ng_ratio,
+      bank: mortgage,
+    };
+  }
+
+  /* ─────────────────────────────────────────
+     solveHybridWeightX()
+     Analytically solve for x ∈ [0,1] such that
+     JJ proceeds from Option C = target.
+
+     Equation:
+       target = jj_capital + appreciation × (x·0.5 + (1−x)·jj_ratio)
+       x = (target_app/appreciation − jj_ratio) / (0.5 − jj_ratio)
+  ───────────────────────────────────────── */
+  function solveHybridWeightX(inp) {
+    const { jj_capital, appreciation, jj_ratio, target } = inp;
+
+    if (appreciation <= 0) return null;              // Not applicable
+    const denom = 0.5 - jj_ratio;
+    if (Math.abs(denom) < 1e-10) return null;        // Equal capital → degenerate
+
+    const target_app = target - jj_capital;
+    const x_raw      = (target_app / appreciation - jj_ratio) / denom;
+    const x_clamped  = Math.min(1, Math.max(0, x_raw));
+
+    return {
+      x:       x_clamped,
+      x_raw,
+      clamped: x_raw < -1e-9 || x_raw > 1 + 1e-9,
+    };
+  }
+
+  /* ─────────────────────────────────────────
+     calcOptionCHybrid(inp, x)
+     x = fraction of appreciation split equally (rest pro-rata).
+  ───────────────────────────────────────── */
+  function calcOptionCHybrid(inp, x) {
+    const { mortgage, jj_capital, ng_capital, net_equity, appreciation, jj_ratio, ng_ratio } = inp;
+    if (appreciation <= 0) {
+      return {
+        jj:   net_equity * jj_ratio,
+        ng:   net_equity * ng_ratio,
+        bank: mortgage,
+        note: 'Appreciation ≤ 0 — fallback to pure pro-rata',
+      };
+    }
+    return {
+      jj:   jj_capital + appreciation * (x * 0.5 + (1 - x) * jj_ratio),
+      ng:   ng_capital + appreciation * (x * 0.5 + (1 - x) * ng_ratio),
+      bank: mortgage,
+    };
+  }
+
+  /* ─────────────────────────────────────────
+     calcOptionD()
+     Bank treated as co-investor; full pro-rata including mortgage.
+  ───────────────────────────────────────── */
+  function calcOptionD(inp) {
+    const { sale_price, jj_capital, ng_capital, mortgage } = inp;
+    const total_stack = jj_capital + ng_capital + mortgage;
+    if (total_stack === 0) return { jj: 0, ng: 0, bank: 0 };
+    return {
+      jj:   sale_price * (jj_capital  / total_stack),
+      ng:   sale_price * (ng_capital  / total_stack),
+      bank: sale_price * (mortgage    / total_stack),
+    };
+  }
+
+  /* ─────────────────────────────────────────
+     recommendBestOption()
+     Primary:   min |JJ − target|
+     Secondary: simplicity (A > C > B > D)
+  ───────────────────────────────────────── */
+  function recommendBestOption(allOptions, target) {
+    const order = ['A', 'C', 'B', 'D'];
+    return [...allOptions].sort((a, b) => {
+      const da = Math.abs(a.res.jj - target);
+      const db = Math.abs(b.res.jj - target);
+      if (Math.abs(da - db) > 0.5) return da - db;
+      return order.indexOf(a.id) - order.indexOf(b.id);
+    })[0];
+  }
+
+  /* ─────────────────────────────────────────
+     renderResults()
+  ───────────────────────────────────────── */
+  function renderResults(inp, allOptions, solveResult, best) {
+    const R    = inp.roundFactor;
+    const resA = allOptions.find(o => o.id === 'A').res;
+    const jjA  = applyRound(resA.jj, R);
+
+    /* ── Table ── */
+    const tbody = $('results-body');
+    tbody.innerHTML = '';
+
+    allOptions.forEach(opt => {
+      const r           = { ...opt.res };
+      const jjR         = applyRound(r.jj,   R);
+      const ngR         = applyRound(r.ng,   R);
+      const bankR       = applyRound(r.bank, R);
+      const deltaTarget = jjR - inp.target;
+      const deltaA      = opt.id === 'A' ? null : jjR - jjA;
+      const isBest      = opt.id === best.id;
+
+      const dtClass = Math.abs(deltaTarget) < 1
+        ? 'delta-zero'
+        : deltaTarget > 0 ? 'delta-pos' : 'delta-neg';
+
+      const daClass = deltaA === null
+        ? ''
+        : Math.abs(deltaA) < 1
+          ? 'delta-zero'
+          : deltaA > 0 ? 'delta-pos' : 'delta-neg';
+
+      const tr = document.createElement('tr');
+      if (isBest) tr.classList.add('best-row');
+
+      tr.innerHTML = `
+        <td>
+          <div class="opt-name">${opt.name}${isBest ? '<span class="best-badge">★ Best</span>' : ''}</div>
+          ${opt.desc ? `<div class="opt-desc">${opt.desc}</div>` : ''}
+        </td>
+        <td class="amount-jj">${fmt(jjR)}</td>
+        <td class="amount-ng">${fmt(ngR)}</td>
+        <td class="amount-bank">${fmt(bankR)}</td>
+        <td class="${dtClass}">${fmtDelta(deltaTarget)}</td>
+        <td class="${daClass}">${deltaA === null ? '—' : fmtDelta(deltaA)}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    /* ── Recommendation card ── */
+    const bestRes        = best.res;
+    const bestJJ         = applyRound(bestRes.jj, R);
+    const bestNG         = applyRound(bestRes.ng, R);
+    const bestDeltaT     = bestJJ - inp.target;
+    const bestDeltaClass = Math.abs(bestDeltaT) < 1
+      ? 'delta-zero'
+      : bestDeltaT > 0 ? 'delta-pos' : 'delta-neg';
+
+    let recHTML = `<div class="rec-grid">
+      <div class="rec-item">
+        <div class="rec-label">Best Match</div>
+        <div class="rec-val rec-teal">${best.name}</div>
+      </div>
+      <div class="rec-item">
+        <div class="rec-label">JJ Proceeds</div>
+        <div class="rec-val rec-jj">${fmt(bestJJ)}</div>
+      </div>
+      <div class="rec-item">
+        <div class="rec-label">NG Proceeds</div>
+        <div class="rec-val rec-ng">${fmt(bestNG)}</div>
+      </div>
+      <div class="rec-item">
+        <div class="rec-label">JJ Δ vs Target</div>
+        <div class="rec-val ${bestDeltaClass}">${fmtDelta(bestDeltaT)}</div>
+      </div>`;
+
+    if (best.id === 'C' && solveResult) {
+      recHTML += `
+      <div class="rec-item">
+        <div class="rec-label">Hybrid Equal Weight (x)</div>
+        <div class="rec-val rec-teal">${pct1(solveResult.x)}</div>
+      </div>`;
+    }
+    recHTML += '</div>';
+
+    if (best.id === 'C' && solveResult?.clamped) {
+      recHTML += `<div class="warn-box">⚠ Target is outside the feasible range for the hybrid mechanism (x_raw = ${solveResult.x_raw.toFixed(4)}). Showing nearest boundary: x = ${pct1(solveResult.x)}.</div>`;
+    }
+    if (bestRes.note) {
+      recHTML += `<div class="rec-note">${bestRes.note}</div>`;
+    }
+    $('rec-content').innerHTML = recHTML;
+
+    /* ── Explanation ── */
+    renderExplanation(inp, allOptions, solveResult, R);
+
+    /* ── Show results ── */
+    $('results').style.display = 'block';
+    $('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* ─────────────────────────────────────────
+     renderExplanation()
+  ───────────────────────────────────────── */
+  function renderExplanation(inp, allOptions, solveResult, R) {
+    const {
+      sale_price, mortgage, jj_capital, ng_capital,
+      net_equity, total_capital, appreciation,
+      jj_ratio, ng_ratio, target,
+    } = inp;
+
+    const resA = allOptions.find(o => o.id === 'A').res;
+    const resB = allOptions.find(o => o.id === 'B').res;
+    const resC = allOptions.find(o => o.id === 'C').res;
+    const resD = allOptions.find(o => o.id === 'D').res;
+
+    const jjAr  = applyRound(resA.jj,  R);
+    const ngAr  = applyRound(resA.ng,  R);
+    const jjBr  = applyRound(resB.jj,  R);
+    const ngBr  = applyRound(resB.ng,  R);
+    const jjCr  = applyRound(resC.jj,  R);
+    const ngCr  = applyRound(resC.ng,  R);
+    const jjDr  = applyRound(resD.jj,  R);
+    const ngDr  = applyRound(resD.ng,  R);
+    const bkDr  = applyRound(resD.bank, R);
+
+    let html = '';
+
+    /* Derived values */
+    html += `<div class="explain-section">
+      <h3>Derived Values</h3>
+      <div class="explain-row"><span class="explain-key">Net Equity = Sale − Mortgage</span><span class="explain-val">${fmt(net_equity)}</span></div>
+      <div class="explain-row"><span class="explain-key">Total Capital = JJ + NG</span><span class="explain-val">${fmt(total_capital)}</span></div>
+      <div class="explain-row"><span class="explain-key">Appreciation = Net Equity − Total Capital</span><span class="explain-val ${appreciation >= 0 ? 'pos' : 'neg'}">${fmt(appreciation)}</span></div>
+      <div class="explain-row"><span class="explain-key">JJ Capital Ratio</span><span class="explain-val">${pct(jj_ratio)}</span></div>
+      <div class="explain-row"><span class="explain-key">NG Capital Ratio</span><span class="explain-val">${pct(ng_ratio)}</span></div>
+    </div>`;
+
+    /* Option A */
+    html += `<div class="explain-section"><h3>Option A — Principal First + 50/50 Appreciation</h3>`;
+    if (appreciation >= 0) {
+      html += `<div class="math-box">JJ = JJ_capital + appreciation × 0.5
+   = ${fmt(jj_capital)} + ${fmt(appreciation)} × 0.5
+   = ${fmt(jjAr)}
+
+NG = NG_capital + appreciation × 0.5
+   = ${fmt(ng_capital)} + ${fmt(appreciation)} × 0.5
+   = ${fmt(ngAr)}</div>`;
+    } else {
+      html += `<div class="math-box">Appreciation &lt; 0 → pro-rata fallback on net equity
+
+JJ = net_equity × JJ_ratio  =  ${fmt(net_equity)} × ${pct(jj_ratio)}  =  ${fmt(jjAr)}
+NG = net_equity × NG_ratio  =  ${fmt(net_equity)} × ${pct(ng_ratio)}  =  ${fmt(ngAr)}</div>`;
+    }
+    html += `</div>`;
+
+    /* Option B */
+    html += `<div class="explain-section"><h3>Option B — Pure Pro-Rata After Bank Repayment</h3>
+      <div class="math-box">JJ = net_equity × JJ_ratio  =  ${fmt(net_equity)} × ${pct(jj_ratio)}  =  ${fmt(jjBr)}
+NG = net_equity × NG_ratio  =  ${fmt(net_equity)} × ${pct(ng_ratio)}  =  ${fmt(ngBr)}</div>
+    </div>`;
+
+    /* Option C — Hybrid solver */
+    html += `<div class="explain-section"><h3>Option C — Hybrid Solver (x% equal, (1−x)% pro-rata on appreciation)</h3>`;
+    if (appreciation > 0 && solveResult) {
+      const x     = solveResult.x;
+      const x_raw = solveResult.x_raw;
+      const ta    = target - jj_capital;
+      html += `<div class="math-box">Target JJ proceeds  : ${fmt(target)}
+Target apprecn share: target − JJ_capital  =  ${fmt(target)} − ${fmt(jj_capital)}  =  ${fmt(ta)}
+
+Solve for x  (equal-split weight on appreciation):
+
+  target = JJ_capital + A × (x·0.5 + (1−x)·r)
+  where A = ${fmt(appreciation)},  r = JJ_ratio = ${jj_ratio.toFixed(6)}
+
+  target_app / A  =  x·0.5 + r − x·r  =  x·(0.5 − r) + r
+  x = (target_app / A − r) / (0.5 − r)
+  x = (${(ta / appreciation).toFixed(6)} − ${jj_ratio.toFixed(6)}) / (0.5 − ${jj_ratio.toFixed(6)})
+  x_raw   = ${x_raw.toFixed(6)}
+  x_used  = ${x.toFixed(6)}  →  ${pct1(x)}  ${solveResult.clamped ? '⚠ clamped to [0, 1]' : '✓ within [0, 1]'}
+
+JJ = JJ_capital + A × (x·0.5 + (1−x)·r)
+   = ${fmt(jj_capital)} + ${fmt(appreciation)} × (${x.toFixed(4)}·0.5 + ${(1-x).toFixed(4)}·${jj_ratio.toFixed(4)})
+   = ${fmt(jjCr)}
+
+NG = NG_capital + A × (x·0.5 + (1−x)·ng_ratio)
+   = ${fmt(ng_capital)} + ${fmt(appreciation)} × (${x.toFixed(4)}·0.5 + ${(1-x).toFixed(4)}·${ng_ratio.toFixed(4)})
+   = ${fmt(ngCr)}</div>`;
+      if (solveResult.clamped) {
+        html += `<div class="warn-box">⚠ x_raw = ${x_raw.toFixed(4)} lies outside [0, 1]. Target is outside the feasible range for the hybrid mechanism. Result shown at nearest boundary x = ${pct1(x)}.</div>`;
+      }
+    } else if (appreciation <= 0) {
+      html += `<div class="math-box">Appreciation ≤ 0 — Hybrid solver not applicable.
+Fallback: pro-rata on net equity (identical to Option B).
+
+JJ = net_equity × JJ_ratio  =  ${fmt(net_equity)} × ${pct(jj_ratio)}  =  ${fmt(jjCr)}
+NG = net_equity × NG_ratio  =  ${fmt(net_equity)} × ${pct(ng_ratio)}  =  ${fmt(ngCr)}</div>`;
+    } else {
+      html += `<div class="math-box">Cannot solve analytically (JJ capital ratio = 50% — any x yields the same JJ result).
+Defaulting to x = 50%.</div>`;
+    }
+    html += `</div>`;
+
+    /* Option D */
+    const total_stack = jj_capital + ng_capital + mortgage;
+    html += `<div class="explain-section"><h3>Option D — Bank as Co-Investor (Full Pro-Rata)</h3>
+      <div class="math-box">Total stack = JJ_capital + NG_capital + Mortgage
+             = ${fmt(jj_capital)} + ${fmt(ng_capital)} + ${fmt(mortgage)}  =  ${fmt(total_stack)}
+
+JJ   = sale_price × (JJ_capital  / total_stack)  =  ${fmt(sale_price)} × ${pct(jj_capital / total_stack)}  =  ${fmt(jjDr)}
+NG   = sale_price × (NG_capital  / total_stack)  =  ${fmt(sale_price)} × ${pct(ng_capital / total_stack)}  =  ${fmt(ngDr)}
+Bank = sale_price × (Mortgage    / total_stack)  =  ${fmt(sale_price)} × ${pct(mortgage   / total_stack)}  =  ${fmt(bkDr)}
+
+Check: JJ + NG + Bank  =  ${fmt(jjDr + ngDr + bkDr)}</div>
+    </div>`;
+
+    $('explanation').innerHTML = html;
+  }
+
+  /* ─────────────────────────────────────────
+     Main handler
+  ───────────────────────────────────────── */
+  function handleCalculate() {
+    const inp = getInputs();
+    const err = $('error-msg');
+
+    if (!inp) { err.classList.add('visible'); return; }
+    err.classList.remove('visible');
+
+    const resA        = calcOptionA(inp);
+    const resB        = calcOptionB(inp);
+    const solveResult = solveHybridWeightX(inp);
+    const xToUse      = solveResult ? solveResult.x : 0.5;
+    const resC        = calcOptionCHybrid(inp, xToUse);
+    const resD        = calcOptionD(inp);
+
+    const allOptions = [
+      {
+        id: 'A', name: 'Option A',
+        desc: inp.appreciation >= 0
+          ? 'Capital first + 50/50 appreciation'
+          : 'Pro-rata fallback (appreciation < 0)',
+        res: resA,
+      },
+      {
+        id: 'B', name: 'Option B',
+        desc: 'Pure pro-rata after bank repayment',
+        res: resB,
+      },
+      {
+        id: 'C', name: 'Option C',
+        desc: solveResult
+          ? `Hybrid — x = ${pct1(solveResult.x)} equal${solveResult.clamped ? ' ⚠ clamped' : ''}`
+          : 'Hybrid (N/A — appreciation ≤ 0, fallback to pro-rata)',
+        res: resC,
+      },
+      {
+        id: 'D', name: 'Option D',
+        desc: 'Bank as co-investor (full pro-rata)',
+        res: resD,
+      },
+    ];
+
+    const best = recommendBestOption(allOptions, inp.target);
+    renderResults(inp, allOptions, solveResult, best);
+  }
+
+  $('btn-calculate').addEventListener('click', handleCalculate);
+
+  /* Init live derived on load */
+  updateDerived();
+
+})();
+</script>
+</body>
+</html>
