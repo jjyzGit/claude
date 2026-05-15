@@ -391,8 +391,8 @@
     $('founders-sub').textContent = `was ${fmt1(foundersNow)}% pre-round`;
 
     // Implied dilution
-    const impliedDilution = foundersNow - foundersAfter;
-    $('dilution-num').textContent = `${fmt1(impliedDilution)}pp`;
+    const impliedDilution = ((foundersNow - foundersAfter) / foundersNow) * 100;
+    $('dilution-num').textContent = `${fmt1(impliedDilution)}%`;
     $('dilution-sub').textContent = `${fmt1(foundersNow)}% → ${fmt1(foundersAfter)}%`;
 
     // Post-money
