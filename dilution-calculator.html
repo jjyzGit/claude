@@ -339,17 +339,20 @@
     const foundersNow = parseFloat($('founders').value) || 0;
     const proRataPct  = parseFloat($('prorata').value)  || 0;
 
-    const post = pre + lead;
-    if (post === 0) return;
+    if (pre + lead === 0) return;
 
-    // Core calc
-    const investorOwnership = (lead / post) * 100;          // new investor %
-
-    // Pro-rata: existing non-founder investors invest proRataPct% of their rights
-    // Their rights = their_ownership% × lead (standard pro-rata formula)
-    const existingNonFounder = Math.max(0, 100 - foundersNow - investorOwnership); // approx
-    const proRataAmount      = (proRataPct / 100) * (existingNonFounder / 100) * lead;
-    const totalRound         = lead + proRataAmount;
+    // Iterative solve: post = pre + lead + proRata, where proRata depends on post
+    let post = pre + lead;
+    let investorOwnership, existingNonFounder, proRataAmount, totalRound;
+    for (let i = 0; i < 20; i++) {
+      investorOwnership  = (lead / post) * 100;
+      existingNonFounder = Math.max(0, 100 - foundersNow - investorOwnership);
+      proRataAmount      = (proRataPct / 100) * (existingNonFounder / 100) * lead;
+      totalRound         = lead + proRataAmount;
+      const next         = pre + totalRound;
+      if (Math.abs(next - post) < 0.00001) { post = next; break; }
+      post = next;
+    }
 
     // Founders post-round (diluted by investor + pro-rata participants)
     const totalNewOwnership  = (totalRound / post) * 100;
