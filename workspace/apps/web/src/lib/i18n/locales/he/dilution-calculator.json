@@ -1,0 +1,16 @@
+{
+  "title": "מחשבון דילול",
+  "subtitle": "סימולציית סבב גיוס",
+  "investmentAmount": "סכום ההשקעה",
+  "postMoneyValuation": "שווי פוסט-מאני",
+  "ownership": "אחוז בעלות המשקיע",
+  "preMoney": "שווי פרה-מאני",
+  "statusExceeded": "חורג מ-20%",
+  "statusOk": "בגבולות המותר",
+  "warningTitle": "⚠ חריגת סף הדילול",
+  "withinTitle": "✓ בגבולות הסף",
+  "warningBody": "אחוז הבעלות של המשקיע חורג מסף הדילול של 20%. הפחיתו את סכום ההשקעה או הגדילו את השווי פוסט-מאני.",
+  "withinBody": "הבעלות בגבולות מכסת הדילול של 20%. התנאים מקובלים.",
+  "ofPostMoney": "מתוך {{amount}} פוסט-מאני",
+  "postMoneyMinusInvestment": "פוסט-מאני − השקעה"
+}

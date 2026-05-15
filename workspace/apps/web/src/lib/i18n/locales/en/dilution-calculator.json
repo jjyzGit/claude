@@ -1,0 +1,16 @@
+{
+  "title": "DILUTION CALCULATOR",
+  "subtitle": "FUNDING ROUND SIMULATION",
+  "investmentAmount": "INVESTMENT AMOUNT",
+  "postMoneyValuation": "POST-MONEY VALUATION",
+  "ownership": "INVESTOR OWNERSHIP",
+  "preMoney": "PRE-MONEY VALUATION",
+  "statusExceeded": "EXCEEDS 20% CAP",
+  "statusOk": "WITHIN LIMIT",
+  "warningTitle": "⚠ DILUTION CAP BREACHED",
+  "withinTitle": "✓ WITHIN CAP",
+  "warningBody": "Investor ownership exceeds the 20% dilution threshold. Reduce the investment amount or increase the post-money valuation.",
+  "withinBody": "Ownership is within the 20% dilution cap. The terms are acceptable.",
+  "ofPostMoney": "of {{amount}} post-money",
+  "postMoneyMinusInvestment": "post-money − investment"
+}
