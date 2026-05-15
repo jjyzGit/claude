@@ -20,7 +20,7 @@
 
   .container {
     width: 100%;
-    max-width: 900px;
+    max-width: 960px;
     display: flex;
     flex-direction: column;
     gap: 36px;
@@ -56,7 +56,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 6px 12px;
+    padding: 6px 14px;
     border-radius: 6px;
     border: 1px solid;
     font-family: 'Courier New', monospace;
@@ -64,100 +64,24 @@
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    transition: all 0.15s ease;
+    transition: all 0.15s;
     white-space: nowrap;
   }
-
-  .badge.ok   { background: #0d1f17; border-color: #238636; color: #3fb950; }
-  .badge.warn { background: #1f0d0d; border-color: #da3633; color: #f85149; }
+  .badge.ok   { background:#0d1f17; border-color:#238636; color:#3fb950; }
+  .badge.warn { background:#1f0d0d; border-color:#da3633; color:#f85149; }
 
   hr { border: none; border-top: 1px solid #21262d; }
 
-  .inputs { display: flex; flex-direction: column; gap: 28px; }
-  .input-group { display: flex; flex-direction: column; gap: 10px; }
-
-  .input-label-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .input-label {
-    font-family: 'Courier New', monospace;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #6e7681;
-  }
-
-  .input-value {
-    font-family: 'Courier New', monospace;
-    font-size: 14px;
-    font-weight: 600;
-    color: #e6edf3;
-  }
-
-  .slider-row {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  input[type=range] {
-    flex: 1;
-    height: 4px;
-    appearance: none;
-    background: #21262d;
-    border-radius: 2px;
-    outline: none;
-    cursor: pointer;
-  }
-
-  input[type=range]::-webkit-slider-thumb {
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #58a6ff;
-    border: 2px solid #0a0c10;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-
-  input[type=range]:hover::-webkit-slider-thumb { background: #79c0ff; }
-
-  input[type=number] {
-    width: 90px;
-    padding: 6px 10px;
-    background: #161b22;
-    border: 1px solid #30363d;
-    border-radius: 6px;
-    color: #e6edf3;
-    font-family: 'Courier New', monospace;
-    font-size: 13px;
-    text-align: right;
-    outline: none;
-    transition: border-color 0.15s;
-  }
-
-  input[type=number]:focus { border-color: #58a6ff; }
-  input[type=number]::-webkit-inner-spin-button { opacity: 0.5; }
-
-  /* Founders row above results */
-  .founders-row {
+  /* ── Inputs ─────────────────────────────────── */
+  .inputs {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    align-items: center;
+    gap: 20px 32px;
   }
 
-  .founders-input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
+  .field { display: flex; flex-direction: column; gap: 6px; }
 
-  .founders-input-label {
+  .field-label {
     font-family: 'Courier New', monospace;
     font-size: 10px;
     letter-spacing: 0.15em;
@@ -165,105 +89,138 @@
     color: #6e7681;
   }
 
-  .founders-input-inner {
+  .field-inner {
     display: flex;
     align-items: center;
     gap: 8px;
   }
 
-  .founders-input-inner input[type=number] {
-    width: 80px;
+  .field-inner input[type=number] {
+    flex: 1;
+    padding: 9px 12px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    color: #e6edf3;
+    font-family: 'Courier New', monospace;
+    font-size: 15px;
+    font-weight: 600;
+    outline: none;
+    transition: border-color 0.15s;
+    min-width: 0;
   }
+  .field-inner input[type=number]:focus { border-color: #58a6ff; }
+  .field-inner input[type=number]::-webkit-inner-spin-button { opacity: 0.4; }
 
-  .founders-input-inner span {
+  .field-unit {
     font-family: 'Courier New', monospace;
     font-size: 12px;
     color: #6e7681;
+    white-space: nowrap;
   }
 
-  /* 4-column results */
+  .field-hint {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    color: #484f58;
+    margin-top: 2px;
+  }
+
+  /* divider between sections */
+  .section-label {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #484f58;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #21262d;
+    grid-column: 1 / -1;
+    margin-top: 8px;
+  }
+
+  /* ── Results ─────────────────────────────────── */
   .results {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
   }
 
-  .result-card {
+  .card {
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 18px 16px;
     border-radius: 8px;
     border: 1px solid #21262d;
     background: #161b22;
     transition: border-color 0.2s;
   }
 
-  .result-card.ownership-ok   { border-color: #238636; }
-  .result-card.ownership-warn { border-color: #da3633; }
-  .result-card.status-ok      { border-color: #238636; }
-  .result-card.status-warn    { border-color: #da3633; }
+  .card.highlight      { border-color: #58a6ff; background: #0d1b2e; }
+  .card.c-ok           { border-color: #238636; }
+  .card.c-warn         { border-color: #da3633; }
+  .card.c-status-ok    { border-color: #238636; }
+  .card.c-status-warn  { border-color: #da3633; }
 
   .card-label {
     font-family: 'Courier New', monospace;
-    font-size: 10px;
+    font-size: 9px;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
-
-  .card-label.ok      { color: #3fb950; }
-  .card-label.warn    { color: #f85149; }
   .card-label.neutral { color: #6e7681; }
   .card-label.blue    { color: #58a6ff; }
+  .card-label.ok      { color: #3fb950; }
+  .card-label.warn    { color: #f85149; }
 
-  .card-number {
+  .card-num {
     font-family: 'Courier New', monospace;
-    font-size: 36px;
+    font-size: 30px;
     font-weight: 700;
     line-height: 1;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     transition: color 0.2s;
   }
-
-  .card-number.ok      { color: #3fb950; }
-  .card-number.warn    { color: #f85149; }
-  .card-number.neutral { color: #e6edf3; }
-  .card-number.blue    { color: #58a6ff; }
+  .card-num.blue    { color: #58a6ff; }
+  .card-num.ok      { color: #3fb950; }
+  .card-num.warn    { color: #f85149; }
+  .card-num.neutral { color: #e6edf3; }
 
   .card-sub {
     font-family: 'Courier New', monospace;
-    font-size: 11px;
+    font-size: 10px;
     color: #6e7681;
     margin-top: auto;
+    line-height: 1.5;
   }
 
+  /* status card */
   .status-title {
     font-family: 'Courier New', monospace;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
-
   .status-title.ok   { color: #3fb950; }
   .status-title.warn { color: #f85149; }
 
   .status-body {
     font-family: 'Courier New', monospace;
-    font-size: 11px;
+    font-size: 10px;
     line-height: 1.6;
     color: #8b949e;
   }
 
-  @media (max-width: 700px) {
-    .results { grid-template-columns: 1fr 1fr; }
-    .founders-row { grid-template-columns: 1fr; }
+  @media (max-width: 780px) {
+    .results { grid-template-columns: repeat(3, 1fr); }
+    .inputs  { grid-template-columns: 1fr; }
   }
-
-  @media (max-width: 420px) {
-    .results { grid-template-columns: 1fr; }
-    .card-number { font-size: 28px; }
+  @media (max-width: 500px) {
+    .results { grid-template-columns: 1fr 1fr; }
+    .card-num { font-size: 24px; }
   }
 </style>
 </head>
@@ -283,148 +240,162 @@
 
   <hr>
 
+  <!-- ── Inputs ── -->
   <div class="inputs">
-    <div class="input-group">
-      <div class="input-label-row">
-        <span class="input-label">Investment Amount</span>
-        <span class="input-value" id="inv-display">$2.5M</span>
-      </div>
-      <div class="slider-row">
-        <input type="range" id="inv-slider" min="1" max="5" step="0.1" value="2.5">
-        <input type="number" id="inv-input" min="1" max="5" step="0.1" value="2.5">
+
+    <div class="section-label">Round terms</div>
+
+    <div class="field">
+      <div class="field-label">Investment Amount</div>
+      <div class="field-inner">
+        <input type="number" id="inv" value="2" min="0" step="0.1">
+        <span class="field-unit">$M</span>
       </div>
     </div>
 
-    <div class="input-group">
-      <div class="input-label-row">
-        <span class="input-label">Post-Money Valuation</span>
-        <span class="input-value" id="pm-display">$12.0M</span>
-      </div>
-      <div class="slider-row">
-        <input type="range" id="pm-slider" min="8" max="25" step="0.5" value="12">
-        <input type="number" id="pm-input" min="8" max="25" step="0.5" value="12">
+    <div class="field">
+      <div class="field-label">Post-Money Valuation</div>
+      <div class="field-inner">
+        <input type="number" id="post" value="20" min="0" step="0.5">
+        <span class="field-unit">$M</span>
       </div>
     </div>
 
-    <div class="founders-row">
-      <div class="founders-input-group">
-        <div class="founders-input-label">Founders Current Ownership</div>
-        <div class="founders-input-inner">
-          <input type="number" id="founders-input" min="1" max="99" step="0.1" value="65.3">
-          <span>% (pre-round)</span>
-        </div>
+    <div class="section-label">Cap table</div>
+
+    <div class="field">
+      <div class="field-label">Founders Current Ownership</div>
+      <div class="field-inner">
+        <input type="number" id="founders" value="65.3" min="0" max="99" step="0.1">
+        <span class="field-unit">%</span>
       </div>
     </div>
+
+    <div class="field">
+      <div class="field-label">Pre-seed Pro-rata Participation</div>
+      <div class="field-inner">
+        <input type="number" id="prorata" value="100" min="0" max="100" step="1">
+        <span class="field-unit">%</span>
+      </div>
+      <div class="field-hint">Existing non-founder investors exercising their right to co-invest and maintain their stake.</div>
+    </div>
+
   </div>
 
   <hr>
 
+  <!-- ── Results ── -->
   <div class="results">
-    <div class="result-card ownership-ok" id="card-ownership">
-      <div class="card-label neutral">Investor Ownership</div>
-      <div class="card-number ok" id="ownership-num">20.8%</div>
-      <div class="card-sub" id="ownership-sub">of $12.0M post-money</div>
+
+    <!-- Total Round -->
+    <div class="card highlight" id="card-round">
+      <div class="card-label blue">Total Round</div>
+      <div class="card-num blue" id="round-num">$2.0M</div>
+      <div class="card-sub" id="round-sub">lead + pro-rata co-invest</div>
     </div>
 
-    <div class="result-card" id="card-founders">
+    <!-- Investor Ownership -->
+    <div class="card c-ok" id="card-inv-own">
+      <div class="card-label ok" id="inv-own-label">Investor Ownership</div>
+      <div class="card-num ok" id="inv-own-num">10.0%</div>
+      <div class="card-sub" id="inv-own-sub">of $20.0M post-money</div>
+    </div>
+
+    <!-- Founders post-round -->
+    <div class="card" id="card-founders">
       <div class="card-label blue">Founders Post-Round</div>
-      <div class="card-number blue" id="founders-num">51.9%</div>
+      <div class="card-num blue" id="founders-num">58.6%</div>
       <div class="card-sub" id="founders-sub">was 65.3% pre-round</div>
     </div>
 
-    <div class="result-card" id="card-premoney">
+    <!-- Pre-money -->
+    <div class="card" id="card-premoney">
       <div class="card-label neutral">Pre-Money Valuation</div>
-      <div class="card-number neutral" id="premoney-num">$9.5M</div>
+      <div class="card-num neutral" id="premoney-num">$18.0M</div>
       <div class="card-sub">post-money − investment</div>
     </div>
 
-    <div class="result-card status-ok" id="card-status">
+    <!-- Status -->
+    <div class="card c-status-ok" id="card-status">
       <div class="status-title ok" id="status-title">✓ WITHIN CAP</div>
-      <div class="status-body" id="status-body">
-        Ownership is within the 20% dilution cap. The terms are acceptable.
-      </div>
+      <div class="status-body" id="status-body">Ownership is within the 20% dilution cap. The terms are acceptable.</div>
     </div>
+
   </div>
 
 </div>
 
 <script>
-  const INV_MIN = 1, INV_MAX = 5, PM_MIN = 8, PM_MAX = 25;
   const CAP = 20;
 
-  const invSlider      = document.getElementById('inv-slider');
-  const invInput       = document.getElementById('inv-input');
-  const pmSlider       = document.getElementById('pm-slider');
-  const pmInput        = document.getElementById('pm-input');
-  const foundersInput  = document.getElementById('founders-input');
+  const $ = id => document.getElementById(id);
 
-  function clamp(v, min, max) { return Math.min(max, Math.max(min, v)); }
   function fmt1(v) { return v.toFixed(1); }
+  function fmt2(v) { return v.toFixed(2); }
 
   function update() {
-    const inv      = parseFloat(invSlider.value);
-    const pm       = parseFloat(pmSlider.value);
-    const foundersNow = clamp(parseFloat(foundersInput.value) || 65.3, 1, 99);
+    const lead      = parseFloat($('inv').value)     || 0;
+    const post      = parseFloat($('post').value)    || 0;
+    const foundersNow = parseFloat($('founders').value) || 0;
+    const proRataPct  = parseFloat($('prorata').value)  || 0;
 
-    const ownership       = (inv / pm) * 100;
-    const preMoney        = pm - inv;
-    const foundersAfter   = foundersNow * (1 - ownership / 100);
-    const exceeded        = ownership > CAP;
+    if (post === 0) return;
 
-    // Sync number inputs with sliders
-    invInput.value = fmt1(inv);
-    pmInput.value  = fmt1(pm);
+    // Core calc
+    const investorOwnership = (lead / post) * 100;          // new investor %
+    const preMoney          = post - lead;
 
-    // Header displays
-    document.getElementById('inv-display').textContent = `$${fmt1(inv)}M`;
-    document.getElementById('pm-display').textContent  = `$${fmt1(pm)}M`;
+    // Pro-rata: existing non-founder investors invest proRataPct% of their rights
+    // Their rights = their_ownership% × lead (standard pro-rata formula)
+    const existingNonFounder = Math.max(0, 100 - foundersNow - investorOwnership); // approx
+    const proRataAmount      = (proRataPct / 100) * (existingNonFounder / 100) * lead;
+    const totalRound         = lead + proRataAmount;
+
+    // Founders post-round (diluted by investor + pro-rata participants)
+    const totalNewOwnership  = (totalRound / post) * 100;
+    const foundersAfter      = foundersNow * (1 - totalNewOwnership / 100);
+
+    const exceeded = investorOwnership > CAP;
 
     // Badge
-    const badge = document.getElementById('badge');
-    badge.className = `badge ${exceeded ? 'warn' : 'ok'}`;
-    document.getElementById('badge-icon').textContent = exceeded ? '▲' : '●';
-    document.getElementById('badge-text').textContent = exceeded ? 'EXCEEDS 20% CAP' : 'WITHIN LIMIT';
+    $('badge').className = `badge ${exceeded ? 'warn' : 'ok'}`;
+    $('badge-icon').textContent = exceeded ? '▲' : '●';
+    $('badge-text').textContent = exceeded ? 'EXCEEDS 20% CAP' : 'WITHIN LIMIT';
+
+    // Total round card
+    $('round-num').textContent = `$${fmt1(totalRound)}M`;
+    $('round-sub').textContent = proRataAmount > 0
+      ? `$${fmt1(lead)}M lead + $${fmt1(proRataAmount)}M pro-rata`
+      : 'lead only (0% pro-rata)';
 
     // Investor ownership card
-    const ownershipCard = document.getElementById('card-ownership');
-    const ownershipNum  = document.getElementById('ownership-num');
-    ownershipCard.className = `result-card ${exceeded ? 'ownership-warn' : 'ownership-ok'}`;
-    ownershipNum.className  = `card-number ${exceeded ? 'warn' : 'ok'}`;
-    ownershipNum.textContent = `${fmt1(ownership)}%`;
-    document.getElementById('ownership-sub').textContent = `of $${fmt1(pm)}M post-money`;
+    const oc = $('card-inv-own');
+    oc.className = `card ${exceeded ? 'c-warn' : 'c-ok'}`;
+    $('inv-own-label').className = `card-label ${exceeded ? 'warn' : 'ok'}`;
+    $('inv-own-num').className   = `card-num   ${exceeded ? 'warn' : 'ok'}`;
+    $('inv-own-num').textContent = `${fmt1(investorOwnership)}%`;
+    $('inv-own-sub').textContent = `of $${fmt1(post)}M post-money`;
 
     // Founders card
-    document.getElementById('founders-num').textContent = `${fmt1(foundersAfter)}%`;
-    document.getElementById('founders-sub').textContent = `was ${fmt1(foundersNow)}% pre-round`;
+    $('founders-num').textContent = `${fmt1(foundersAfter)}%`;
+    $('founders-sub').textContent = `was ${fmt1(foundersNow)}% pre-round`;
 
-    // Pre-money card
-    document.getElementById('premoney-num').textContent = `$${fmt1(preMoney)}M`;
+    // Pre-money
+    $('premoney-num').textContent = `$${fmt1(preMoney)}M`;
 
     // Status card
-    const statusCard  = document.getElementById('card-status');
-    const statusTitle = document.getElementById('status-title');
-    const statusBody  = document.getElementById('status-body');
-    statusCard.className  = `result-card ${exceeded ? 'status-warn' : 'status-ok'}`;
-    statusTitle.className = `status-title ${exceeded ? 'warn' : 'ok'}`;
-    statusTitle.textContent = exceeded ? '⚠ DILUTION CAP BREACHED' : '✓ WITHIN CAP';
-    statusBody.textContent  = exceeded
+    $('card-status').className   = `card ${exceeded ? 'c-status-warn' : 'c-status-ok'}`;
+    $('status-title').className  = `status-title ${exceeded ? 'warn' : 'ok'}`;
+    $('status-title').textContent = exceeded ? '⚠ DILUTION CAP BREACHED' : '✓ WITHIN CAP';
+    $('status-body').textContent  = exceeded
       ? 'Investor ownership exceeds the 20% dilution threshold. Reduce the investment or increase the post-money valuation.'
       : 'Ownership is within the 20% dilution cap. The terms are acceptable.';
   }
 
-  invSlider.addEventListener('input',  () => { invInput.value = invSlider.value; update(); });
-  pmSlider.addEventListener('input',   () => { pmInput.value  = pmSlider.value;  update(); });
-
-  invInput.addEventListener('change', () => {
-    invSlider.value = fmt1(clamp(parseFloat(invInput.value) || INV_MIN, INV_MIN, INV_MAX));
-    update();
+  ['inv','post','founders','prorata'].forEach(id => {
+    $(id).addEventListener('input',  update);
+    $(id).addEventListener('change', update);
   });
-  pmInput.addEventListener('change', () => {
-    pmSlider.value = fmt1(clamp(parseFloat(pmInput.value) || PM_MIN, PM_MIN, PM_MAX));
-    update();
-  });
-  foundersInput.addEventListener('input',  update);
-  foundersInput.addEventListener('change', update);
 
   update();
 </script>
