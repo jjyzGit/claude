@@ -254,9 +254,9 @@
     </div>
 
     <div class="field">
-      <div class="field-label">Post-Money Valuation</div>
+      <div class="field-label">Pre-Money Valuation</div>
       <div class="field-inner">
-        <input type="number" id="post" value="20" min="0" step="0.5">
+        <input type="number" id="pre" value="18" min="0" step="0.5">
         <span class="field-unit">$M</span>
       </div>
     </div>
@@ -308,11 +308,11 @@
       <div class="card-sub" id="founders-sub">was 65.3% pre-round</div>
     </div>
 
-    <!-- Pre-money -->
+    <!-- Post-money -->
     <div class="card" id="card-premoney">
-      <div class="card-label neutral">Pre-Money Valuation</div>
-      <div class="card-num neutral" id="premoney-num">$18.0M</div>
-      <div class="card-sub">post-money − investment</div>
+      <div class="card-label neutral">Post-Money Valuation</div>
+      <div class="card-num neutral" id="premoney-num">$20.0M</div>
+      <div class="card-sub">pre-money + investment</div>
     </div>
 
     <!-- Status -->
@@ -335,15 +335,15 @@
 
   function update() {
     const lead      = parseFloat($('inv').value)     || 0;
-    const post      = parseFloat($('post').value)    || 0;
+    const pre       = parseFloat($('pre').value)     || 0;
     const foundersNow = parseFloat($('founders').value) || 0;
     const proRataPct  = parseFloat($('prorata').value)  || 0;
 
+    const post = pre + lead;
     if (post === 0) return;
 
     // Core calc
     const investorOwnership = (lead / post) * 100;          // new investor %
-    const preMoney          = post - lead;
 
     // Pro-rata: existing non-founder investors invest proRataPct% of their rights
     // Their rights = their_ownership% × lead (standard pro-rata formula)
@@ -380,8 +380,8 @@
     $('founders-num').textContent = `${fmt1(foundersAfter)}%`;
     $('founders-sub').textContent = `was ${fmt1(foundersNow)}% pre-round`;
 
-    // Pre-money
-    $('premoney-num').textContent = `$${fmt1(preMoney)}M`;
+    // Post-money
+    $('premoney-num').textContent = `$${fmt1(post)}M`;
 
     // Status card
     $('card-status').className   = `card ${exceeded ? 'c-status-warn' : 'c-status-ok'}`;
@@ -392,7 +392,7 @@
       : 'Ownership is within the 20% dilution cap. The terms are acceptable.';
   }
 
-  ['inv','post','founders','prorata'].forEach(id => {
+  ['inv','pre','founders','prorata'].forEach(id => {
     $(id).addEventListener('input',  update);
     $(id).addEventListener('change', update);
   });
