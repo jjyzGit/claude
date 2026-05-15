@@ -142,7 +142,7 @@
   /* ── Results ─────────────────────────────────── */
   .results {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 12px;
   }
 
@@ -215,11 +215,11 @@
   }
 
   @media (max-width: 780px) {
-    .results { grid-template-columns: repeat(3, 1fr); }
+    .results { grid-template-columns: repeat(2, 1fr); }
     .inputs  { grid-template-columns: 1fr; }
   }
   @media (max-width: 500px) {
-    .results { grid-template-columns: 1fr 1fr; }
+    .results { grid-template-columns: 1fr; }
     .card-num { font-size: 24px; }
   }
 </style>
@@ -308,6 +308,13 @@
       <div class="card-sub" id="founders-sub">was 65.3% pre-round</div>
     </div>
 
+    <!-- Implied Dilution -->
+    <div class="card" id="card-dilution">
+      <div class="card-label neutral">Implied Dilution</div>
+      <div class="card-num neutral" id="dilution-num">6.7pp</div>
+      <div class="card-sub" id="dilution-sub">founder stake reduction</div>
+    </div>
+
     <!-- Post-money -->
     <div class="card" id="card-premoney">
       <div class="card-label neutral">Post-Money Valuation</div>
@@ -382,6 +389,11 @@
     // Founders card
     $('founders-num').textContent = `${fmt1(foundersAfter)}%`;
     $('founders-sub').textContent = `was ${fmt1(foundersNow)}% pre-round`;
+
+    // Implied dilution
+    const impliedDilution = foundersNow - foundersAfter;
+    $('dilution-num').textContent = `${fmt1(impliedDilution)}pp`;
+    $('dilution-sub').textContent = `${fmt1(foundersNow)}% → ${fmt1(foundersAfter)}%`;
 
     // Post-money
     $('premoney-num').textContent = `$${fmt1(post)}M`;
