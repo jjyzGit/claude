@@ -1,0 +1,10 @@
+{
+  "extends": "@sollapay/tsconfig/base.json",
+  "compilerOptions": {
+    "composite": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["vite.config.ts", ".storybook/**/*.ts", ".storybook/**/*.tsx", "vitest.shims.d.ts"]
+}

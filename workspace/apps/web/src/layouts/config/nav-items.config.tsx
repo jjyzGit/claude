@@ -9,11 +9,5 @@ export interface NavItemConfig {
 }
 
 export const navItems: NavItemConfig[] = [
-  {id: 'accounts', labelKey: 'accounts', icon: 'shield', path: '/trust-accounts'},
-  {
-    id: 'dilution-calculator',
-    labelKey: 'dilutionCalculator',
-    icon: 'bar-chart',
-    path: '/dilution-calculator'
-  }
+  {id: 'accounts', labelKey: 'accounts', icon: 'shield', path: '/trust-accounts'}
 ];

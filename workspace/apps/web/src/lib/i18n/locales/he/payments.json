@@ -1,0 +1,7 @@
+{
+  "receivedToast": {
+    "title": "תשלום התקבל בהצלחה בחשבון נאמנות \"{{trustName}}\"!",
+    "description": "{{name}} העביר/ה {{amount}} · {{dateTime}}",
+    "close": "סגור"
+  }
+}

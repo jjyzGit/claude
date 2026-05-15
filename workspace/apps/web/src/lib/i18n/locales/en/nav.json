@@ -1,6 +1,5 @@
 {
   "main": "Main",
   "dashboard": "Dashboard",
-  "accounts": "Accounts",
-  "dilutionCalculator": "Dilution Calc"
+  "accounts": "Accounts"
 }

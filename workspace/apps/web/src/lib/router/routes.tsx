@@ -3,7 +3,6 @@ import {Navigate, createBrowserRouter} from 'react-router-dom';
 import {MainLayout} from '@/layouts';
 import {
   BuyerDetailPage,
-  DilutionCalculatorPage,
   TrustAccountActivationPage,
   TrustAccountListPage,
   TrustAccountViewPage
@@ -32,10 +31,6 @@ export const router = createBrowserRouter([
       {
         path: '/trust-accounts/:id/:tab?',
         element: <TrustAccountViewPage />
-      },
-      {
-        path: '/dilution-calculator',
-        element: <DilutionCalculatorPage />
       },
       {
         path: '*',

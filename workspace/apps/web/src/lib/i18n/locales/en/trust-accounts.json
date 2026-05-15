@@ -1,0 +1,777 @@
+{
+  "balanceChip": {
+    "inactive": "Inactive"
+  },
+  "title": "Trust Accounts",
+  "subtitle": "Manage your trust accounts in one place",
+  "accountCount": "{{count}} accounts",
+  "status": "Status",
+  "create": "Create Trust Account",
+  "errorLoading": "Error loading trust accounts",
+  "errorLoadingDetails": "Error loading trust account",
+  "noAccountsYet": "No trust accounts yet",
+  "noAccountsSubtitle": "No active trust accounts yet",
+  "columns": {
+    "trustName": "Project Name",
+    "type": "Type",
+    "developer": "Developer",
+    "date": "Created on",
+    "balance": "Balance"
+  },
+  "card": {
+    "type": "Type",
+    "developer": "Developer",
+    "date": "Created on",
+    "balance": "Account Balance"
+  },
+  "viewPicker": {
+    "cardView": "Card view",
+    "tableView": "Table view"
+  },
+  "tableActions": {
+    "openMenu": "Open row menu",
+    "editAccount": "Edit details",
+    "deleteAccount": "Delete account"
+  },
+  "statuses": {
+    "draft": "Draft",
+    "setupInProgress": "Setup in Progress",
+    "pendingValidation": "Pending Review",
+    "inReview": "In Review",
+    "clarificationRequired": "Clarification Required",
+    "activationPending": "Activation Pending",
+    "trustActive": "Active",
+    "trustActiveSubtitle": "Open – Ready for Buyers",
+    "buyerActive": "Active"
+  },
+  "trustPurposes": {
+    "sevenPercent": "7% Account",
+    "options": "Options Account"
+  },
+  "filter": {
+    "button": "Filter",
+    "title": "Filter Accounts",
+    "clearAll": "Clear all",
+    "sections": {
+      "status": "Trust Status",
+      "purpose": "Account Type",
+      "createdAt": "Created",
+      "dateRange": "Date Range"
+    },
+    "createdAt": {
+      "all": "All",
+      "last7days": "Last 7 days",
+      "last30days": "Last 30 days",
+      "last90days": "Last 90 days"
+    },
+    "dateRange": {
+      "placeholder": "Select date range"
+    }
+  },
+  "sorting": {
+    "options": {
+      "createdAt": "Created on",
+      "trustName": "Account Name",
+      "type": "Type",
+      "status": "Status",
+      "balance": "Balance"
+    }
+  },
+  "search": {
+    "placeholder": "Search by trust account name or ID...",
+    "emptyTitle": "No trust accounts found",
+    "emptySubtitle": "Your search for \"<bold>{{term}}</bold>\" did not match any trust accounts.<br/>Try again.",
+    "emptySubtitleFiltered": "No trust accounts match the current filters.<br/>Try adjusting your filters.",
+    "clearSearch": "Clear search",
+    "clearFilters": "Clear filters"
+  },
+  "modal": {
+    "title": "Create trust account",
+    "continue": "Continue",
+    "nameLabel": "Trust account name",
+    "namePlaceholder": "e.g., Riverside Towers Phase 1",
+    "purposeLabel": "Trust purpose",
+    "purposeTooltip": "Choose the legal framework for this trust account (e.g. 7% law or options plan)",
+    "selectPlaceholder": "Select trust purpose..."
+  },
+  "editModal": {
+    "title": "Edit trust account",
+    "save": "Save changes"
+  },
+  "deleteModal": {
+    "title": "Delete trust account",
+    "description": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone.",
+    "descriptionGeneric": "Are you sure you want to delete this trust account? This action cannot be undone.",
+    "confirm": "Delete"
+  },
+  "messages": {
+    "createError": "Error creating trust account",
+    "updateError": "Error updating trust account"
+  },
+  "activation": {
+    "title": "Prepare Trust Account for Activation",
+    "sectionTitle": "Activation Package",
+    "sectionSubtitle": "Complete all steps to activate the account",
+    "eta": "Processing time: up to 1 business day",
+    "accountType": "Account Type",
+    "refIdTooltip": "Trust account ID: {{refId}}",
+    "action": {
+      "start": "Start",
+      "submitTrustAccount": "Submit Trust Account",
+      "startTrustAccount": "Start Submission",
+      "continueTrustAccount": "Continue Submission",
+      "openTrustAccount": "Open Trust Account",
+      "edit": "Edit",
+      "view": "View"
+    },
+    "packageStatus": {
+      "notSubmitted": "Draft",
+      "readyToSubmit": "Ready to Submit",
+      "pendingReview": "Awaiting Review",
+      "submitted": "Submitted",
+      "approved": "Approved",
+      "inReview": "In Review",
+      "partiallyFilled": "Partially Filled",
+      "clarificationRequired": "Clarification Required",
+      "optional": "Optional"
+    },
+    "packageFormModal": {
+      "title": "Activation Package Form",
+      "next": "Continue",
+      "finish": "Finish",
+      "back": "Back",
+      "save": "Save",
+      "cancel": "Cancel",
+      "tabs": {
+        "trustDetails": "Trust Account Details",
+        "compliance": "Compliance",
+        "kyc": "Know Your Customer"
+      },
+      "steps": {
+        "developerDetails": "Developer Details",
+        "trustScope": "Trust Scope",
+        "residencyStatus": "Residency Status",
+        "supportingDocuments": "Foundation Documents"
+      }
+    },
+    "activatedToast": {
+      "title": "\"{{name}}\" Trust Account Activated!",
+      "description": "The trust account is ready for use — buyers can now be added and transactions managed.",
+      "close": "Close"
+    },
+    "confirmSubmitModal": {
+      "title": "Before Submitting",
+      "description": "Is there anything you think needs fixing? Have you reviewed all forms and confirmed everything is correct?",
+      "confirm": "Submit",
+      "cancel": "I want to review again"
+    },
+    "successSubmitModal": {
+      "title": "Trust Account Submitted!",
+      "description": "Sollapay team received all the documents you submitted. Once the review is complete, they will approve them. At this stage the trust account is not yet active. The review process takes up to 2 business days. If additional clarifications are needed we will update you, and you can always check the status here.",
+      "statusValue": "Status: Submitted",
+      "close": "Got it, thanks"
+    },
+    "packages": {
+      "trustDetails": {
+        "title": "Trust Details",
+        "description": "Trust purpose, parties, beneficiaries, and key financial details",
+        "form": {
+          "fields": {
+            "timeLength": "Expected project duration",
+            "timeLengthPlaceholder": "Select duration...",
+            "volume": "Estimated project volume",
+            "volumePlaceholder": "Enter estimated volume",
+            "payinTypes": "Pay-in sources",
+            "payinTypesPlaceholder": "Select pay-in sources",
+            "payinOtherTextPlaceholder": "Describe other pay-in types...",
+            "payoutTypes": "Payout destinations",
+            "payoutTypesPlaceholder": "Select payout destinations",
+            "payoutOtherTextPlaceholder": "Describe other payout types...",
+            "developerType": "Beneficiary type",
+            "developerTypePlaceholder": "Select beneficiary type",
+            "relationshipType": "Relationship with developer",
+            "relationshipTypePlaceholder": "Select relationship type",
+            "metFaceToFace": "Have you met the developer face to face?",
+            "metFaceToFacePlaceholder": "Select yes or no",
+            "fullName": "Full name",
+            "fullNamePlaceholder": "First and last name",
+            "fullNameCorporate": "Full name of corporation",
+            "fullNameCorporatePlaceholder": "Corporation name",
+            "idNumberCorporate": "ID number (Corp.)",
+            "idNumberIndividual": "ID number (National ID)",
+            "idNumberPlaceholder": "National ID number",
+            "idNumberCorporatePlaceholder": "Corp. registration number",
+            "establishedDate": "Established date",
+            "dateOfBirth": "Date of birth",
+            "datePlaceholder": "Select date",
+            "address": "Address",
+            "addressPlaceholder": "Enter address"
+          },
+          "options": {
+            "timeLength": {
+              "lt_3m": "Less than 3 months",
+              "m3_6": "3-6 months",
+              "gt_6m": "More than 6 months"
+            },
+            "payoutTypes": {
+              "fundedBank": "Funded bank",
+              "other": "Other",
+              "developerBankAccount": "Developer bank account"
+            },
+            "payinTypes": {
+              "buyers": "Buyers",
+              "other": "Other"
+            },
+            "developerTypes": {
+              "corporation": "Corporation",
+              "individual": "Individual"
+            },
+            "relationshipTypes": {
+              "firstProject": "First project together",
+              "fewProjects": "Worked on a few projects",
+              "ongoingCollab": "Ongoing collaboration"
+            },
+            "metFaceToFace": {
+              "yes": "Yes",
+              "no": "No"
+            }
+          },
+          "sections": {
+            "developerDocuments": {
+              "tip": {
+                "title": "Note!",
+                "description": "Adding documents will help significantly with automatic form filling"
+              }
+            }
+          }
+        },
+        "trustScope": {
+          "title": "Trust Scope",
+          "description": "Expected duration, projected volume, incoming and outgoing payments"
+        },
+        "developerDetails": {
+          "sections": {
+            "documents": {
+              "title": "Developer Documents",
+              "description": "Corporate registration documents to verify the legal entity of the developer"
+            },
+            "details": {
+              "title": "Developer Details",
+              "description": "Identification details and personal information about the developer"
+            }
+          }
+        }
+      },
+      "compliance": {
+        "title": "Compliance",
+        "description": "FATCA/CRS declarations and regulatory compliance documents",
+        "residencyStatus": {
+          "title": "Residency Status",
+          "description": "FATCA/CRS declarations and regulatory compliance documents"
+        },
+        "supportingDocuments": {
+          "form": {
+            "landOwnership": {
+              "description": "Proof of ownership or land rights related to the project",
+              "examples": [
+                "land registry extract",
+                "Israel Land Authority rights approval",
+                "combination agreement",
+                "urban renewal agreement"
+              ]
+            },
+            "transactionLegal": {
+              "description": "Agreements or key documents defining the underlying transaction",
+              "examples": [
+                "irrevocable power of attorney",
+                "land registry / title deeds",
+                "mortgage documents",
+                "receipts",
+                "collateral",
+                "other"
+              ]
+            }
+          },
+          "title": "Transaction Foundation Documents",
+          "description": "Additional agreements and documents needed for the trust"
+        }
+      },
+      "kyc": {
+        "title": "KYC",
+        "description": "Identity and regulatory details for buyers, sellers, and related parties"
+      }
+    }
+  },
+  "view": {
+    "activity": {
+      "title": "Recent Activity",
+      "showMore": "Show more",
+      "countLabel": "Showing {{loaded}} of {{total}}",
+      "empty": {
+        "title": "No activity yet",
+        "description": "Activity will appear here as transactions, buyers, and documents are added."
+      },
+      "activityType": {
+        "buyer_deposit": "Buyer Deposit",
+        "buyer_withdrawal": "Withdrawal",
+        "buyer_added": "New Buyer Added",
+        "buyer_removed": "Buyer Removed",
+        "document_added": "Document Added",
+        "document_updated": "Document Updated",
+        "document_removed": "Document Removed"
+      },
+      "kpi": {
+        "totalBalance": "Total balance in trust",
+        "depositsThisWeek": "Deposits this week",
+        "activeBuyers": "Active buyers",
+        "transactions": "Transactions",
+        "changeFromLastWeek": "change from last week",
+        "noChangeFromLastWeek": "no change from last week",
+        "changeFromLastMonth": "change from last month",
+        "withFundsInTrust": "with funds in trust"
+      }
+    },
+    "balanceMetric": {
+      "title": "Total Trust Balance"
+    },
+    "header": {
+      "developer": "Developer",
+      "developerInfo": {
+        "idSuffix": {
+          "corporation": "(Corp.)",
+          "individual": "(ID)"
+        },
+        "tooltips": {
+          "purpose": "Trust account purpose",
+          "fullName": "Developer name",
+          "idNumber": {
+            "corporation": "Company registration number (Corp.)",
+            "individual": "National ID number"
+          },
+          "address": "Developer address"
+        },
+        "relationshipTypes": {
+          "firstProject": "First project",
+          "fewProjects": "Few projects",
+          "ongoingCollab": "Ongoing collab"
+        }
+      }
+    },
+    "errorLoading": "Error loading trust account",
+    "tabs": {
+      "overview": "Overview",
+      "buyers": "Buyers",
+      "transactions": "Transactions",
+      "documents": "Documents",
+      "beneficiaries": "Beneficiaries"
+    },
+    "overview": {
+      "empty": {
+        "title": "No buyers yet",
+        "description": "Add your first buyer to get started",
+        "action": "Add Buyer"
+      }
+    },
+    "buyers": {
+      "empty": {
+        "title": "No buyers yet",
+        "description": "Buyers added to this trust account will appear here",
+        "action": "Add Buyer"
+      },
+      "tab": {
+        "createBuyer": "Create Buyer",
+        "paymentRequest": "Payment Request"
+      },
+      "list": {
+        "header": {
+          "title": "Buyers",
+          "count": "{{count}} buyers",
+          "description": "Manage all buyers added to this trust account"
+        },
+        "search": {
+          "placeholder": "Search by buyer name or unit..."
+        },
+        "viewPicker": {
+          "table": "Table view",
+          "card": "Card view"
+        },
+        "columns": {
+          "buyerName": "Buyer Name",
+          "createdAt": "Created At",
+          "purchasePrice": "Purchase Price",
+          "amountToPay": "Amount to Pay (7%)",
+          "depositPaid": "Deposit Paid",
+          "paymentStatus": "Payment Status",
+          "unit": "Unit",
+          "regulatoryReports": "Tax Authority Reporting"
+        },
+        "status": {
+          "noRequest": "No payment request sent",
+          "requestSent": "Payment request sent",
+          "partial": "Partial deposit made",
+          "completed": "Funds held in trust",
+          "cancelled": "Cancelled by buyer",
+          "expired": "Request expired"
+        },
+        "filter": {
+          "button": "Filter",
+          "title": "Filter Buyers",
+          "clearAll": "Clear all",
+          "sections": {
+            "paymentStatus": "Payment Status",
+            "depositRange": "Deposit Paid Amount",
+            "createdAt": "Created At"
+          },
+          "depositRange": {
+            "from": "From",
+            "to": "To"
+          }
+        },
+        "actions": {
+          "requestPayment": "Request Payment",
+          "viewBuyer": "Buyer Details",
+          "editBuyer": "Edit Details",
+          "deleteBuyer": "Delete Buyer",
+          "moreMenu": "More options"
+        },
+        "sorting": {
+          "createdAt": "Created At",
+          "fullName": "Buyer Name",
+          "purchasePrice": "Purchase Price",
+          "depositPaid": "Deposit Paid",
+          "paymentStatus": "Payment Status",
+          "unit": "Unit"
+        },
+        "emptySearch": {
+          "title": "No buyers found",
+          "subtitle": "No buyers match <bold>\"{{term}}\"</bold>.<br/>Try searching by a different buyer name or unit.",
+          "clear": "Clear search"
+        },
+        "extraBuyers_one": "+{{count}}",
+        "extraBuyers_other": "+{{count}}",
+        "buyerCountLabel": "buyers",
+        "extraBuyerCountLabel": "extra buyers",
+        "buyersInUnit": "Buyers in {{unit}}"
+      },
+      "addBuyerModal": {
+        "title": "Add Buyer",
+        "documents": {
+          "title": "Buyer Documents",
+          "tip": {
+            "title": "Note!",
+            "description": "Adding documents will help a lot with auto-filling forms"
+          },
+          "registrationForm": "Buyer Registration Form",
+          "signedContract": "Signed Purchase Contract",
+          "clickToUpload": "Click to upload signed purchase contract",
+          "dragHere": "or drag here"
+        },
+        "buyerDetails": {
+          "title": "Buyer Details",
+          "name": "Buyer Name",
+          "namePlaceholder": "e.g. Israel Israeli",
+          "nationalId": "ID",
+          "nationalIdPlaceholder": "ID number",
+          "email": "Email",
+          "emailPlaceholder": "buyer@example.com",
+          "phone": "Phone",
+          "phonePlaceholder": "Phone number",
+          "dateOfBirth": "Date of Birth",
+          "dateOfBirthPlaceholder": "Select date",
+          "address": "Address",
+          "addressPlaceholder": "Add address",
+          "addBuyer": "Add Buyer",
+          "removeBuyer": "Remove Buyer {{number}}",
+          "buyerNumber": "Buyer {{number}}"
+        },
+        "unitDetails": {
+          "title": "Unit Details",
+          "buildingNumber": "Building Number",
+          "buildingNumberPlaceholder": "e.g. 1, A, 4B",
+          "unitNumber": "Unit Number",
+          "unitNumberPlaceholder": "e.g. 12, 101, 4A",
+          "purchasePrice": "Purchase Price",
+          "purchasePricePlaceholder": "e.g. 1,500,000"
+        },
+        "attachments": {
+          "title": "Attachments",
+          "type": "Type",
+          "typePlaceholder": "Select type",
+          "description": "Description",
+          "descriptionPlaceholder": "e.g. P-12, 47",
+          "add": "Add Attachment",
+          "remove": "Remove",
+          "types": {
+            "balcony": "Balcony",
+            "yard": "Yard",
+            "parking": "Parking",
+            "storage": "Storage",
+            "other": "Other"
+          }
+        },
+        "footer": {
+          "addBuyer": "Add Buyer",
+          "back": "Back",
+          "save": "Save",
+          "sendPaymentRequest": "Send Payment Request to Buyer"
+        }
+      },
+      "successPrompt": {
+        "title": "Buyer Added Successfully!",
+        "description1": "Buyer details have been updated in the trust account buyer list.",
+        "description2": "Would you like to continue and send {{buyerName}} a payment request?",
+        "continueToPayment": "Yes, Continue to Payment Request",
+        "backToBuyers": "Back to Buyers"
+      },
+      "confirmPayment": {
+        "title": "Send Payment Request?",
+        "description": "You are about to send a payment request to {{buyerName}}.\nThis action cannot be undone.",
+        "confirm": "Yes, Send Request",
+        "cancel": "Back"
+      },
+      "paymentSent": {
+        "title": "Payment request sent to {{buyerName}}",
+        "descriptionRtp": "The buyer will receive a payment request to their phone.",
+        "descriptionManual": "The buyer will need to make a manual bank transfer or go directly to their bank branch to complete the transfer.",
+        "summaryTitle": "Payment Request Summary",
+        "buyer": "Buyer",
+        "unit": "Unit",
+        "purchasePrice": "Purchase Price",
+        "paymentMethod": "Payment Method",
+        "requestAmount": "Request Amount ({{percent}}%)",
+        "cta": "Got it, thanks"
+      },
+      "paymentRequest": {
+        "buyerName": "Buyer Name",
+        "buyerNamePlaceholder": "Select a buyer",
+        "paymentMethod": "Payment Method",
+        "paymentMethodPlaceholder": "Select...",
+        "numberOfPayments": "Number of Payments",
+        "amount": "Amount",
+        "percentOfPrice": "7% of purchase price",
+        "amountHint": "Up to {{max}} (7% of purchase price)",
+        "amountRemainingHint": "Up to {{remaining}} remaining",
+        "maxButton": "Max",
+        "errors": {
+          "amountRequired": "Amount is required",
+          "amountAboveZero": "Amount must be greater than 0",
+          "amountExceedsMax": "Amount cannot exceed {{max}} (7% of purchase price)",
+          "amountExceedsRemaining": "Amount cannot exceed the remaining {{remaining}}"
+        },
+        "methods": {
+          "rtp": "Payment Initiation",
+          "manual_branch_transfer": "Independent Payment"
+        }
+      },
+      "errors": {
+        "nameRequired": "Name is required",
+        "nationalIdRequired": "ID/Passport is required",
+        "buildingNumberRequired": "Building number is required",
+        "unitNumberRequired": "Unit number is required",
+        "purchasePriceRequired": "Purchase price is required",
+        "emailRequired": "Email is required",
+        "phoneRequired": "Phone is required",
+        "addressRequired": "Address is required",
+        "dateOfBirthRequired": "Date of birth is required",
+        "invalidIsraeliId": "Invalid Israeli ID number",
+        "invalidPhone": "Invalid Israeli phone number",
+        "invalidEmail": "Invalid email address",
+        "unitAlreadyTaken": "Unit {{unitNumber}} in building {{buildingNumber}} already has a buyer"
+      },
+      "detail": {
+        "purchasedUnits": "Purchased Units",
+        "unitCard": {
+          "title": "Unit Details",
+          "building": "Building",
+          "unit": "Apt.",
+          "attachments": "Attachments",
+          "noAttachments": "No attachments",
+          "edit": "Edit",
+          "addAttachment": "Add Attachment",
+          "remove": "Remove",
+          "of": "of",
+          "noDescription": "No description",
+          "attachmentCount": "{{count}} attachments",
+          "floorPlanHint": "Click a pin to view attachment details"
+        },
+        "unitCount_one": "{{count}} unit",
+        "unitCount_other": "{{count}} units",
+        "metrics": {
+          "purchasePrice": "Purchase Price",
+          "maxCollection": "Maximum Collection",
+          "paymentRequestsSent": "Payment Requests Sent",
+          "completedPayments": "Completed Payments",
+          "remaining": "Remaining {{amount}}"
+        },
+        "paymentHistory": "Payment History",
+        "columns": {
+          "date": "Date",
+          "reference": "Reference",
+          "paymentMethod": "Payment Method",
+          "percent": "Percent",
+          "amount": "Amount",
+          "status": "Status"
+        },
+        "instructionStatus": {
+          "pending_execution": "Pending",
+          "awaiting_funds": "Awaiting Funds",
+          "partially_matched": "Partial",
+          "completed": "Completed",
+          "failed": "Failed",
+          "cancelled": "Cancelled",
+          "expired": "Expired"
+        },
+        "emptyPayments": {
+          "title": "No Payment Instructions Yet",
+          "description": "Payment instructions will appear here once they are sent for unit {{unit}}."
+        },
+        "paymentsError": "Failed to load payment history. Please refresh the page.",
+        "metaInfo": {
+          "dateOfBirth": "Date of birth",
+          "nationalId": "National ID number",
+          "phone": "Phone number",
+          "email": "Email",
+          "address": "Address"
+        },
+        "actions": {
+          "sendPaymentRequest": "Request Payment",
+          "editDetails": "Edit Details",
+          "deleteBuyer": "Delete Buyer",
+          "addDocuments": "Add Documents"
+        }
+      },
+      "regulatoryReports": {
+        "count": "{{count}}/{{total}} reports",
+        "popover": {
+          "title": "Tax Authority Reporting",
+          "subtitle": "Mark manually upon completion"
+        },
+        "realEstateTaxation": {
+          "label": "Real Estate Taxation",
+          "host": "taxes.gov.il"
+        },
+        "salesLawCommissioner": {
+          "label": "Sales Law Commissioner",
+          "host": "hoc-hamecher.com"
+        }
+      }
+    },
+    "transactions": {
+      "sectionTitle": "Transactions",
+      "sectionSubtitle": "Track all payments and transfers in this trust account",
+      "empty": {
+        "title": "No transactions yet",
+        "description": "Transactions will appear here once buyers make payments"
+      },
+      "emptySearch": {
+        "title": "No transactions found",
+        "subtitle": "Try changing your search or filters",
+        "clear": "Clear search and filters"
+      },
+      "date": {
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "dayBefore": "Day before yesterday"
+      },
+      "initiationMethod": {
+        "rtp": "Initiated Payment",
+        "pis": "Initiated Payment",
+        "manual_branch_transfer": "Standalone Payment",
+        "unknown": "Unknown"
+      },
+      "filter": {
+        "button": "Filter",
+        "title": "Filter Transactions",
+        "clearAll": "Clear All",
+        "amount": "Amount",
+        "amountFrom": "From",
+        "amountTo": "To",
+        "paymentMethod": "Payment Method",
+        "transactionType": "Transaction Type",
+        "sections": {
+          "paymentType": "Payment Type",
+          "direction": "Direction",
+          "amountRange": "Amount Range"
+        },
+        "direction": {
+          "credit": "Incoming",
+          "debit": "Outgoing"
+        },
+        "amountRange": {
+          "from": "From",
+          "to": "To"
+        }
+      },
+      "groupBy": {
+        "label": "Group by",
+        "date": "Date",
+        "counterparty": "Counterparty",
+        "purchase": "Unit",
+        "status": "Status",
+        "initiationMethod": "Payment Method",
+        "direction": "Direction"
+      },
+      "search": {
+        "placeholder": "Search by buyer name or unit..."
+      },
+      "status": {
+        "inflight": "In Progress",
+        "applied": "Applied"
+      },
+      "direction": {
+        "credit": "Incoming",
+        "debit": "Outgoing"
+      },
+      "group": {
+        "transactionCount": "{{count}} transactions"
+      }
+    },
+    "documents": {
+      "compliance": {
+        "title": "Compliance Documents",
+        "subtitle": "Legal and contractual documents to support opening the trust account"
+      },
+      "trustDetails": {
+        "title": "Trust Details Documents",
+        "subtitle": "Corporate and identity documents related to the trust account setup"
+      },
+      "emptyState": {
+        "title": "No documents yet",
+        "subtitle": "Uploaded documents will appear here."
+      }
+    },
+    "purchases": {
+      "documents": "Documents",
+      "emptyDocuments": {
+        "title": "No documents",
+        "description": "Documents attached to this purchase will appear here."
+      }
+    },
+    "beneficiaries": {
+      "title": "Beneficiaries",
+      "subtitle": "Parties and their roles (developer, beneficiaries, buyers)",
+      "addParty": "Add Party",
+      "tableActions": {
+        "edit": "Edit details",
+        "delete": "Delete beneficiary"
+      },
+      "columns": {
+        "name": "Name",
+        "role": "Role",
+        "idNumber": "ID / Company No.",
+        "date": "Birth / Incorporation Date",
+        "address": "Address"
+      },
+      "placeholders": {
+        "name": "Full name",
+        "idNumber": "ID / Company No.",
+        "date": "Select date",
+        "address": "Address"
+      },
+      "roles": {
+        "developer": "Developer",
+        "buyer": "Buyer"
+      }
+    }
+  }
+}

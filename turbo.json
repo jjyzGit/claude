@@ -1,0 +1,76 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
+  "concurrency": "50",
+  "globalDependencies": ["pnpm-lock.yaml"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["src/**", "tsconfig.json", "package.json", "$TURBO_DEFAULT$"],
+      "outputs": ["dist/**", "build/**", ".next/**"],
+      "env": ["NODE_ENV"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "interactive": true
+    },
+    "pack": {
+      "dependsOn": ["lint", "build", "test"]
+    },
+    "lint": {
+      "inputs": ["$TURBO_DEFAULT$"],
+      "outputs": []
+    },
+    "lint:fix": {
+      "cache": false
+    },
+    "type-check": {
+      "dependsOn": ["^build"],
+      "inputs": ["src/**", "tests/**", "tsconfig.json", "package.json", "$TURBO_DEFAULT$"],
+      "outputs": []
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "inputs": ["src/**", "tests/**", "tsconfig.json", "vitest.config.ts", "$TURBO_DEFAULT$"],
+      "outputs": ["coverage/**"],
+      "env": ["NODE_ENV", "CI"],
+      "passThroughEnv": ["DATABASE_URL", "TEST_DATABASE_URL"]
+    },
+    "test:watch": {
+      "cache": false,
+      "persistent": true,
+      "interactive": true
+    },
+    "test:coverage": {
+      "dependsOn": ["^build"],
+      "inputs": ["src/**", "tests/**", "tsconfig.json", "vitest.config.ts"],
+      "outputs": ["coverage/**"],
+      "env": ["NODE_ENV", "CI"]
+    },
+    "format": {
+      "inputs": ["$TURBO_DEFAULT$"],
+      "outputs": []
+    },
+    "format:fix": {
+      "cache": false
+    },
+    "clean": {
+      "cache": false
+    },
+    "db:generate": {
+      "cache": false
+    },
+    "db:migrate": {
+      "cache": false
+    },
+    "db:push": {
+      "cache": false
+    },
+    "db:studio": {
+      "cache": false,
+      "persistent": true,
+      "interactive": true
+    }
+  }
+}

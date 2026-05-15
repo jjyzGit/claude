@@ -1,0 +1,779 @@
+{
+  "balanceChip": {
+    "inactive": "לא פעיל"
+  },
+  "title": "חשבונות נאמנות",
+  "subtitle": "נהל את חשבונות הנאמנות שלך במקום אחד.",
+  "accountCount": "{{count}} חשבונות",
+  "status": "סטטוס",
+  "create": "צור חשבון נאמנות",
+  "errorLoading": "שגיאה בטעינת חשבונות נאמנות",
+  "errorLoadingDetails": "שגיאה בטעינת חשבון נאמנות",
+  "noAccountsYet": "אין עדיין חשבונות נאמנות",
+  "noAccountsSubtitle": "אין חשבונות נאמנות פעילים כרגע",
+  "columns": {
+    "trustName": "שם החשבון",
+    "type": "סוג",
+    "developer": "יזם",
+    "date": "נוצר ב",
+    "balance": "יתרה"
+  },
+  "card": {
+    "type": "סוג",
+    "developer": "יזם",
+    "date": "נוצר ב",
+    "balance": "יתרה בחשבון"
+  },
+  "viewPicker": {
+    "cardView": "תצוגת כרטיסיות",
+    "tableView": "תצוגת טבלה"
+  },
+  "tableActions": {
+    "openMenu": "פתח תפריט שורה",
+    "editAccount": "עריכת פרטים",
+    "deleteAccount": "מחיקת חשבון"
+  },
+  "statuses": {
+    "draft": "טיוטה",
+    "setupInProgress": "בהגדרה",
+    "pendingValidation": "ממתין לבדיקה",
+    "inReview": "בבדיקה",
+    "clarificationRequired": "נדרשת הבהרה",
+    "activationPending": "ממתין להפעלה",
+    "trustActive": "פעיל",
+    "trustActiveSubtitle": "פתוח - מוכן לקונים",
+    "buyerActive": "פעיל"
+  },
+  "trustPurposes": {
+    "sevenPercent": "מכר יזם",
+    "options": "סיחור אופציות"
+  },
+  "filter": {
+    "button": "סינון",
+    "title": "סינון חשבונות",
+    "clearAll": "נקה הכל",
+    "sections": {
+      "status": "סטטוס נאמנות",
+      "purpose": "סוג חשבון",
+      "createdAt": "נוצר ב",
+      "dateRange": "טווח תאריך"
+    },
+    "createdAt": {
+      "all": "הכל",
+      "last7days": "7 ימים אחרונים",
+      "last30days": "30 ימים אחרונים",
+      "last90days": "90 ימים אחרונים"
+    },
+    "dateRange": {
+      "placeholder": "בחר טווח תאריכים"
+    }
+  },
+  "sorting": {
+    "options": {
+      "createdAt": "נוצר ב",
+      "trustName": "שם החשבון",
+      "type": "סוג",
+      "status": "סטטוס",
+      "balance": "יתרה בחשבון"
+    }
+  },
+  "search": {
+    "placeholder": "חיפוש לפי שם חשבון הנאמנות או מזהה...",
+    "emptyTitle": "לא נמצאו חשבונות נאמנות",
+    "emptySubtitle": "החיפוש שלך עבור \"<bold>{{term}}</bold>\" לא תאם לאף חשבון נאמנות.<br/>אפשר לנסות שוב.",
+    "emptySubtitleFiltered": "לא נמצאו חשבונות נאמנות התואמים לסינון הנוכחי.<br/>נסה לשנות את הסינון.",
+    "clearSearch": "נקה חיפוש",
+    "clearFilters": "נקה סינון"
+  },
+  "modal": {
+    "title": "יצירת חשבון נאמנות",
+    "continue": "המשך",
+    "nameLabel": "שם חשבון הנאמנות",
+    "namePlaceholder": "לדוגמה: עו״ד ישראל ישראלי עבור מגדלי הנהר",
+    "purposeLabel": "סוג חשבון הנאמנות",
+    "purposeTooltip": "בחר את סוג העסקה:\nמכר יזם (7%) – רכישה ישירה מהיזם.\nסיחור אופציות – העברת זכות לרכישה (אופציה) בין צדדים.",
+    "selectPlaceholder": "בחר..."
+  },
+  "editModal": {
+    "title": "עריכת חשבון נאמנות",
+    "save": "שמור שינויים"
+  },
+  "deleteModal": {
+    "title": "מחיקת חשבון נאמנות",
+    "description": "האם למחוק את \"{{name}}\"? לא ניתן לשחזר פעולה זו.",
+    "descriptionGeneric": "האם למחוק את חשבון הנאמנות הזה? לא ניתן לשחזר פעולה זו.",
+    "confirm": "מחק"
+  },
+  "messages": {
+    "createError": "שגיאה ביצירת חשבון נאמנות",
+    "updateError": "שגיאה בעדכון חשבון נאמנות"
+  },
+  "activation": {
+    "title": "הפעלה",
+    "sectionTitle": "שלבי הפעלה",
+    "sectionSubtitle": "יש להשלים את כל השלבים להפעלת החשבון",
+    "eta": "זמן טיפול: עד 1 ימי עסקים",
+    "accountType": "סוג חשבון",
+    "refIdTooltip": "מזהה נאמנות: {{refId}}",
+    "action": {
+      "start": "התחל",
+      "submitTrustAccount": "הגש לאישור",
+      "startTrustAccount": "התחל הגשה",
+      "continueTrustAccount": "המשך הגשה",
+      "openTrustAccount": "עבור לחשבון הנאמנות",
+      "edit": "ערוך",
+      "view": "צפה"
+    },
+    "packageStatus": {
+      "notSubmitted": "טיוטה",
+      "readyToSubmit": "מוכן להגשה",
+      "pendingReview": "ממתין לבדיקה",
+      "submitted": "חבילה הוגשה",
+      "approved": "אושר",
+      "inReview": "בבדיקה",
+      "partiallyFilled": "מולא חלקית",
+      "clarificationRequired": "נדרשת הבהרה",
+      "optional": "לא חובה"
+    },
+    "packageFormModal": {
+      "title": "טופס חבילת הפעלה",
+      "next": "המשך",
+      "finish": "סיים",
+      "back": "חזור",
+      "save": "שמור",
+      "cancel": "ביטול",
+      "tabs": {
+        "trustDetails": "פרטי הנאמנות",
+        "compliance": "ציות",
+        "kyc": "הכר את הלקוח"
+      },
+      "steps": {
+        "developerDetails": "פרטי היזם",
+        "trustScope": "היקף הנאמנות",
+        "residencyStatus": "תושבות מס",
+        "supportingDocuments": "מסמכי יסוד"
+      }
+    },
+    "activatedToast": {
+      "title": "חשבון הנאמנות ״{{name}}״ הופעל!",
+      "description": "חשבון הנאמנות פעיל ומוכן לשימוש — ניתן כעת להוסיף קונים ולנהל עסקאות.",
+      "close": "סגור"
+    },
+    "confirmSubmitModal": {
+      "title": "לפני הגשת חשבון הנאמנות",
+      "description": "האם יש משהו שלדעתך דורש תיקון? האם עברתם שוב פעם על כל הטפסים ווידאתם שהכל תקין?",
+      "confirm": "הגש",
+      "cancel": "אני רוצה לבדוק שוב"
+    },
+    "successSubmitModal": {
+      "title": "חשבון הנאמנות הוגש!",
+      "description": "צוות סולהפיי קיבל את כל המסמכים שהגשת. לאחר סיום הבדיקה, הם יאשרו אותם. בשלב זה חשבון הנאמנות עדיין לא פעיל. תהליך הבדיקה נמשך עד שני ימי עסקים. אם יידרשו הבהרות נוספות נעדכן אותך, ובכל מקרה תמיד אפשר להתעדכן גם כאן.",
+      "statusValue": "סטטוס: הוגש",
+      "close": "הבנתי, תודה"
+    },
+    "packages": {
+      "trustDetails": {
+        "title": "פרטי הנאמנות",
+        "description": "היקף הנאמנות ופרטי היזם",
+        "form": {
+          "fields": {
+            "timeLength": "משך זמן משוער",
+            "timeLengthPlaceholder": "בחר משך...",
+            "volume": "נפח צפוי (ש״ח)",
+            "volumePlaceholder": "לדוגמא: 10,000,000",
+            "payinTypes": "תשלומים נכנסים (Pay Ins)",
+            "payinTypesPlaceholder": "בחר...",
+            "payinOtherTextPlaceholder": "תאר את סוגי התשלומים הנכנסים...",
+            "payoutTypes": "תשלומים יוצאים (Pay Outs)",
+            "payoutTypesPlaceholder": "בחר...",
+            "payoutOtherTextPlaceholder": "תאר את סוגי התשלומים היוצאים...",
+            "developerType": "סוג הנהנה",
+            "developerTypePlaceholder": "בחר...",
+            "relationshipType": "הקשר עם היזם",
+            "relationshipTypePlaceholder": "בחר...",
+            "metFaceToFace": "האם נפגשת עם היזם פנים אל פנים?",
+            "metFaceToFacePlaceholder": "בחר...",
+            "fullName": "שם מלא",
+            "fullNamePlaceholder": "שם פרטי ומשפחה",
+            "fullNameCorporate": "שם מלא של התאגיד",
+            "fullNameCorporatePlaceholder": "שם התאגיד",
+            "idNumberCorporate": "מספר מזהה (ח.פ)",
+            "idNumberIndividual": "מספר מזהה (ת.ז)",
+            "idNumberPlaceholder": "מספר ת.ז.",
+            "idNumberCorporatePlaceholder": "מספר ח.פ.",
+            "establishedDate": "תאריך התאגדות",
+            "dateOfBirth": "תאריך לידה",
+            "datePlaceholder": "בחר תאריך",
+            "address": "כתובת",
+            "addressPlaceholder": "כתובת"
+          },
+          "options": {
+            "timeLength": {
+              "lt_3m": "פחות מ-3 חודשים",
+              "m3_6": "3-6 חודשים",
+              "gt_6m": "יותר מ-6 חודשים"
+            },
+            "payoutTypes": {
+              "fundedBank": "בנק מממן",
+              "other": "אחר",
+              "developerBankAccount": "חשבון הבנק של היזם"
+            },
+            "payinTypes": {
+              "buyers": "קונים",
+              "other": "אחר"
+            },
+            "developerTypes": {
+              "corporation": "תאגיד",
+              "individual": "פרטי"
+            },
+            "relationshipTypes": {
+              "firstProject": "פעם ראשונה שאני עובד עם היזם",
+              "fewProjects": "עבדתי איתו מספר פעמים",
+              "ongoingCollab": "שיתוף פעולה מתמשך"
+            },
+            "metFaceToFace": {
+              "yes": "כן",
+              "no": "לא"
+            }
+          },
+          "sections": {
+            "developerDocuments": {
+              "tip": {
+                "title": "שים לב!",
+                "description": "הוספת מסמכים יסייע לך הרבה במילוי אוטומטי של הטפסים"
+              }
+            }
+          }
+        },
+        "trustScope": {
+          "title": "היקף הנאמנות",
+          "description": "משך הזמן, נפח צפוי, תשלומים נכנסים ויוצאים"
+        },
+        "developerDetails": {
+          "sections": {
+            "documents": {
+              "title": "מסמכי היזם",
+              "description": "מסמכי רישום תאגידיים לאימות הישות המשפטית של היזם"
+            },
+            "details": {
+              "title": "פרטי היזם",
+              "description": "פרטי זיהוי ומידע אישי על היזם"
+            }
+          }
+        }
+      },
+      "compliance": {
+        "title": "ציות",
+        "description": "הצהרת תושבות מס ומסמכים משפטיים לעסקה",
+        "residencyStatus": {
+          "title": "תושבות מס",
+          "description": "הצהרת FATCA/CRS ומסמכי ציות רגולטורי"
+        },
+        "supportingDocuments": {
+          "form": {
+            "landOwnership": {
+              "description": "הוכחת בעלות או זכויות בקרקע הקשורות לפרויקט",
+              "examples": [
+                "נסח טאבו",
+                "אישור זכויות רמ\"י",
+                "הסכם קומבינציה",
+                "הסכם התחדשות עירונית"
+              ]
+            },
+            "transactionLegal": {
+              "description": "הסכמים או מסמכים מרכזיים המגדירים את העסקה הבסיסית",
+              "examples": [
+                "ייפוי כוח בלתי חוזר",
+                "מסמכי טאבו / שטרות",
+                "מסמכי משכנתא",
+                "קבלות",
+                "בטוחות",
+                "אחר"
+              ]
+            }
+          },
+          "title": "מסמכי יסוד של העסקה",
+          "description": "הסכמים ומסמכים נוספים הנדרשים לעסקה"
+        }
+      },
+      "kyc": {
+        "title": "הכר את הלקוח",
+        "description": "פרטי זיהוי ורגולציה של קונים, מוכרים וצדדים קשורים"
+      }
+    }
+  },
+  "view": {
+    "activity": {
+      "title": "פעילות אחרונה",
+      "showMore": "הצג עוד",
+      "countLabel": "מציג {{loaded}} מתוך {{total}}",
+      "empty": {
+        "title": "אין פעילות עדיין",
+        "description": "פעילות תופיע כאן כאשר יתווספו תנועות, קונים ומסמכים."
+      },
+      "activityType": {
+        "buyer_deposit": "הפקדת קונה",
+        "buyer_withdrawal": "משיכה",
+        "buyer_added": "קונה חדש נוסף",
+        "buyer_removed": "קונה הוסר",
+        "document_added": "מסמך נוסף",
+        "document_updated": "מסמך עודכן",
+        "document_removed": "מסמך הוסר"
+      },
+      "kpi": {
+        "totalBalance": "יתרה כוללת בנאמנות",
+        "depositsThisWeek": "הפקדות השבוע",
+        "activeBuyers": "קונים פעילים",
+        "transactions": "תנועות",
+        "changeFromLastWeek": "שינוי מהשבוע שעבר",
+        "noChangeFromLastWeek": "אין שינוי מהשבוע שעבר",
+        "changeFromLastMonth": "שינוי מהחודש שעבר",
+        "withFundsInTrust": "עם כספים בנאמנות"
+      }
+    },
+    "balanceMetric": {
+      "title": "יתרה כוללת בנאמנות"
+    },
+    "header": {
+      "developer": "יזם",
+      "developerInfo": {
+        "idSuffix": {
+          "corporation": "(ח.פ.)",
+          "individual": "(ת.ז.)"
+        },
+        "tooltips": {
+          "purpose": "מטרת חשבון הנאמנות",
+          "fullName": "שם היזם",
+          "idNumber": {
+            "corporation": "מספר חברה (ח.פ.)",
+            "individual": "תעודת זהות"
+          },
+          "address": "כתובת היזם"
+        },
+        "relationshipTypes": {
+          "firstProject": "עסקה ראשונה",
+          "fewProjects": "מספר פרויקטים",
+          "ongoingCollab": "שותפות מתמשכת"
+        }
+      }
+    },
+    "errorLoading": "שגיאה בטעינת חשבון נאמנות",
+    "tabs": {
+      "overview": "סקירה כללית",
+      "buyers": "קונים",
+      "transactions": "תנועות",
+      "documents": "מסמכים",
+      "beneficiaries": "נהנים"
+    },
+    "overview": {
+      "empty": {
+        "title": "אין קונים עדיין",
+        "description": "הוסף את הקונה הראשון שלך כדי להתחיל",
+        "action": "הוסף קונה"
+      }
+    },
+    "buyers": {
+      "empty": {
+        "title": "אין קונים עדיין",
+        "description": "קונים שיתווספו לחשבון נאמנות זה יופיעו כאן",
+        "action": "הוסף קונה"
+      },
+      "tab": {
+        "createBuyer": "יצירת קונה",
+        "paymentRequest": "בקשת תשלום"
+      },
+      "list": {
+        "header": {
+          "title": "קונים",
+          "count": "{{count}} קונים",
+          "description": "נהל את כל הקונים שנוספו לחשבון נאמנות זה"
+        },
+        "search": {
+          "placeholder": "חיפוש לפי שם קונה או יחידה..."
+        },
+        "viewPicker": {
+          "table": "תצוגת טבלה",
+          "card": "תצוגת כרטיסיות"
+        },
+        "columns": {
+          "buyerName": "שם הקונה",
+          "createdAt": "נוצר ב",
+          "purchasePrice": "מחיר רכישה",
+          "amountToPay": "סכום לתשלום (7%)",
+          "depositPaid": "סכום פיקדון ששולם",
+          "paymentStatus": "סטטוס תשלום",
+          "unit": "יחידה",
+          "regulatoryReports": "דיווח לרשויות המס"
+        },
+        "status": {
+          "noRequest": "עדיין לא נשלחה בקשה",
+          "requestSent": "בקשת תשלום נשלחה",
+          "partial": "בוצעה הפקדה חלקית",
+          "completed": "כספים מוחזקים בנאמנות",
+          "cancelled": "ביטול מצד הקונה",
+          "expired": "תוקף הבקשה פג"
+        },
+        "filter": {
+          "button": "סינון",
+          "title": "סינון קונים",
+          "clearAll": "נקה הכל",
+          "sections": {
+            "paymentStatus": "סטטוס תשלום",
+            "depositRange": "סכום פיקדון ששולם",
+            "createdAt": "נוצר ב"
+          },
+          "depositRange": {
+            "from": "ממחיר",
+            "to": "ועד מחיר"
+          }
+        },
+        "actions": {
+          "requestPayment": "בקש תשלום",
+          "viewBuyer": "פרטי קונה",
+          "editBuyer": "עריכת פרטים",
+          "deleteBuyer": "מחיקת קונה",
+          "moreMenu": "אפשרויות נוספות"
+        },
+        "sorting": {
+          "createdAt": "נוצר ב",
+          "fullName": "שם קונה",
+          "purchasePrice": "מחיר רכישה",
+          "depositPaid": "סכום פיקדון ששולם",
+          "paymentStatus": "סטטוס תשלום",
+          "unit": "יחידה"
+        },
+        "emptySearch": {
+          "title": "לא נמצאו קונים",
+          "subtitle": "אין קונים התואמים <bold>\"{{term}}\"</bold>.<br/>נסה לחפש לפי שם קונה אחר או יחידה.",
+          "clear": "נקה חיפוש"
+        },
+        "extraBuyers_one": "+{{count}}",
+        "extraBuyers_other": "+{{count}}",
+        "buyerCountLabel": "קונים",
+        "extraBuyerCountLabel": "קונים נוספים",
+        "buyersInUnit": "קונים ב {{unit}}"
+      },
+      "addBuyerModal": {
+        "title": "הוספת קונה",
+        "documents": {
+          "title": "מסמכי קונה",
+          "tip": {
+            "title": "שים לב!",
+            "description": "הוספת מסמכים תסייע רבות במילוי אוטומטי של טפסים"
+          },
+          "registrationForm": "טופס רישום קונה",
+          "signedContract": "חוזה מכר חתום",
+          "clickToUpload": "לחץ להעלאת חוזה מכר חתום",
+          "dragHere": "או גרור לכאן"
+        },
+        "buyerDetails": {
+          "title": "פרטי קונים",
+          "name": "שם הקונה",
+          "namePlaceholder": "לדוגמה: ישראל ישראלי",
+          "nationalId": "ת.ז",
+          "nationalIdPlaceholder": "מספר ת.ז",
+          "email": "דוא\"ל",
+          "emailPlaceholder": "buyer@example.com",
+          "phone": "טלפון",
+          "phonePlaceholder": "מספר טלפון",
+          "dateOfBirth": "תאריך לידה",
+          "dateOfBirthPlaceholder": "בחר תאריך",
+          "address": "כתובת",
+          "addressPlaceholder": "הוסף כתובת",
+          "addBuyer": "הוסף קונה",
+          "removeBuyer": "הסר קונה {{number}}",
+          "buyerNumber": "קונה {{number}}"
+        },
+        "unitDetails": {
+          "title": "פרטי יחידה",
+          "buildingNumber": "מספר בניין",
+          "buildingNumberPlaceholder": "לדוגמה: 1, A, 4B",
+          "unitNumber": "מספר דירה",
+          "unitNumberPlaceholder": "לדוגמה: 12, 101, 4A",
+          "purchasePrice": "מחיר רכישה",
+          "purchasePricePlaceholder": "לדוגמה: 1,500,000"
+        },
+        "attachments": {
+          "title": "הצמדות",
+          "type": "סוג",
+          "typePlaceholder": "בחר סוג",
+          "description": "תיאור",
+          "descriptionPlaceholder": "פרטים נוספים…",
+          "add": "הוסף הצמדה",
+          "remove": "הסר",
+          "types": {
+            "balcony": "מרפסת",
+            "yard": "חצר",
+            "parking": "חנייה",
+            "storage": "מחסן",
+            "other": "אחר"
+          }
+        },
+        "footer": {
+          "addBuyer": "הוסף קונה",
+          "back": "חזור",
+          "save": "שמור",
+          "sendPaymentRequest": "שלח בקשת תשלום לקונה"
+        }
+      },
+      "successPrompt": {
+        "title": "קונה נוצר בהצלחה!",
+        "description1": "פרטי הקונה עודכנו ברשימת הקונים של חשבון הנאמנות.",
+        "description2": "האם ברצונך להמשיך ולשלוח ל{{buyerName}} בקשת תשלום?",
+        "continueToPayment": "כן, המשך לבקשת תשלום",
+        "backToBuyers": "חזרה לקונים"
+      },
+      "confirmPayment": {
+        "title": "שליחת בקשת תשלום?",
+        "description": "אתה עומד לשלוח בקשת תשלום ל{{buyerName}}.\nלא ניתן לבטל פעולה זו.",
+        "confirm": "כן, שלח בקשה",
+        "cancel": "חזרה"
+      },
+      "paymentSent": {
+        "title": "בקשת תשלום נשלחה ל{{buyerName}}",
+        "descriptionRtp": "הקונה יקבל בקשת תשלום לטלפון הנייד שלו.",
+        "descriptionManual": "הקונה יצטרך לבצע העברה בנקאית ידנית או להגיע לסניף הבנק להשלמת ההעברה.",
+        "summaryTitle": "סיכום בקשת תשלום",
+        "buyer": "קונה",
+        "unit": "יחידה",
+        "purchasePrice": "מחיר רכישה",
+        "paymentMethod": "אמצעי תשלום",
+        "requestAmount": "סכום בקשה ({{percent}}%)",
+        "cta": "הבנתי, תודה"
+      },
+      "paymentRequest": {
+        "buyerName": "שם הקונה",
+        "buyerNamePlaceholder": "בחר קונה",
+        "paymentMethod": "אמצעי תשלום",
+        "paymentMethodPlaceholder": "בחר...",
+        "numberOfPayments": "מספר תשלומים",
+        "amount": "סכום",
+        "percentOfPrice": "7% ממחיר הרכישה",
+        "amountHint": "עד {{max}} (7% ממחיר הרכישה)",
+        "amountRemainingHint": "עד {{remaining}} שנותרו",
+        "maxButton": "מקסימום",
+        "errors": {
+          "amountRequired": "יש להזין סכום",
+          "amountAboveZero": "הסכום חייב להיות גדול מ-0",
+          "amountExceedsMax": "הסכום לא יכול לעלות על {{max}} (7% ממחיר הרכישה)",
+          "amountExceedsRemaining": "הסכום לא יכול לעלות על הנותר {{remaining}}"
+        },
+        "methods": {
+          "rtp": "ייזום תשלום",
+          "manual_branch_transfer": "תשלום עצמאי"
+        }
+      },
+      "errors": {
+        "nameRequired": "שם הוא שדה חובה",
+        "nationalIdRequired": "ת.ז הוא שדה חובה",
+        "buildingNumberRequired": "מספר בניין הוא שדה חובה",
+        "unitNumberRequired": "מספר דירה הוא שדה חובה",
+        "purchasePriceRequired": "מחיר רכישה הוא שדה חובה",
+        "emailRequired": "דוא\"ל הוא שדה חובה",
+        "phoneRequired": "טלפון הוא שדה חובה",
+        "addressRequired": "כתובת הוא שדה חובה",
+        "dateOfBirthRequired": "תאריך לידה הוא שדה חובה",
+        "invalidIsraeliId": "מספר ת.ז לא תקין",
+        "invalidPhone": "מספר טלפון לא תקין",
+        "invalidEmail": "כתובת אימייל לא תקינה",
+        "unitAlreadyTaken": "דירה {{unitNumber}} בבניין {{buildingNumber}} כבר רשומה לקונה אחר"
+      },
+      "detail": {
+        "purchasedUnits": "יחידות שנרכשו",
+        "unitCard": {
+          "title": "פרטי יחידה",
+          "building": "בניין",
+          "unit": "דירה",
+          "attachments": "הצמדות",
+          "noAttachments": "אין הצמדות",
+          "edit": "עריכה",
+          "addAttachment": "הוסף הצמדה",
+          "remove": "הסר",
+          "of": "מתוך",
+          "noDescription": "אין תיאור",
+          "attachmentCount": "{{count}} הצמדות",
+          "floorPlanHint": "לחץ על סמן לצפייה בפרטי ההצמדה"
+        },
+        "unitCount_one": "{{count}} יחידה",
+        "unitCount_two": "{{count}} יחידות",
+        "unitCount_many": "{{count}} יחידות",
+        "unitCount_other": "{{count}} יחידות",
+        "metrics": {
+          "purchasePrice": "סכום רכישה",
+          "maxCollection": "מקסימום לגביה",
+          "paymentRequestsSent": "בקשות תשלום שנשלחו",
+          "completedPayments": "תשלומים שהושלמו",
+          "remaining": "נותר {{amount}}"
+        },
+        "paymentHistory": "היסטוריית תשלומים",
+        "columns": {
+          "date": "תאריך",
+          "reference": "אסמכתא",
+          "paymentMethod": "אמצעי תשלום",
+          "percent": "אחוז",
+          "amount": "סכום",
+          "status": "סטטוס"
+        },
+        "instructionStatus": {
+          "pending_execution": "ממתין לביצוע",
+          "awaiting_funds": "ממתין לכספים",
+          "partially_matched": "חלקי",
+          "completed": "הושלם",
+          "failed": "נכשל",
+          "cancelled": "בוטל",
+          "expired": "פג תוקף"
+        },
+        "emptyPayments": {
+          "title": "אין עדיין הוראות תשלום",
+          "description": "הוראות תשלום יופיעו כאן ברגע שישלחו עבור יחידה {{unit}}."
+        },
+        "paymentsError": "טעינת היסטוריית תשלומים נכשלה. אנא רענן את הדף.",
+        "metaInfo": {
+          "dateOfBirth": "תאריך לידה",
+          "nationalId": "מספר תעודת זהות",
+          "phone": "מספר טלפון",
+          "email": "אימייל",
+          "address": "כתובת"
+        },
+        "actions": {
+          "sendPaymentRequest": "בקש תשלום",
+          "editDetails": "עריכת פרטים",
+          "deleteBuyer": "מחיקת קונה",
+          "addDocuments": "הוסף מסמכים"
+        }
+      },
+      "regulatoryReports": {
+        "count": "{{count}}/{{total}} דיווח",
+        "popover": {
+          "title": "דיווח לרשויות המס",
+          "subtitle": "סמן ידנית לאחר השלמה"
+        },
+        "realEstateTaxation": {
+          "label": "מיסוי מקרקעין",
+          "host": "taxes.gov.il"
+        },
+        "salesLawCommissioner": {
+          "label": "ממונה על חוק המכר",
+          "host": "hoc-hamecher.com"
+        }
+      }
+    },
+    "transactions": {
+      "sectionTitle": "תנועות",
+      "sectionSubtitle": "מעקב אחר כל התשלומים וההעברות בחשבון הנאמנות",
+      "empty": {
+        "title": "אין עסקאות עדיין",
+        "description": "עסקאות יופיעו כאן לאחר שקונים יבצעו תשלומים"
+      },
+      "emptySearch": {
+        "title": "לא נמצאו תנועות",
+        "subtitle": "נסה לשנות את החיפוש או הסינון",
+        "clear": "נקה חיפוש וסינון"
+      },
+      "date": {
+        "today": "היום",
+        "yesterday": "אתמול",
+        "dayBefore": "שלשום"
+      },
+      "initiationMethod": {
+        "rtp": "ייזום תשלום",
+        "pis": "ייזום תשלום",
+        "manual_branch_transfer": "תשלום עצמאי",
+        "unknown": "לא ידוע"
+      },
+      "filter": {
+        "button": "סינון",
+        "title": "סינון תנועות",
+        "clearAll": "נקה הכל",
+        "amount": "סכום",
+        "amountFrom": "מסכום",
+        "amountTo": "ועד סכום",
+        "paymentMethod": "אמצעי תשלום",
+        "transactionType": "סוג תנועה",
+        "sections": {
+          "paymentType": "סוג תשלום",
+          "direction": "כיוון",
+          "amountRange": "טווח סכום"
+        },
+        "direction": {
+          "credit": "נכנס",
+          "debit": "יוצא"
+        },
+        "amountRange": {
+          "from": "מ-",
+          "to": "עד"
+        }
+      },
+      "groupBy": {
+        "label": "קיבוץ לפי",
+        "date": "תאריך",
+        "counterparty": "צד",
+        "purchase": "יחידה",
+        "status": "סטטוס",
+        "initiationMethod": "אמצעי תשלום",
+        "direction": "כיוון"
+      },
+      "search": {
+        "placeholder": "חיפוש לפי שם קונה או יחידה..."
+      },
+      "status": {
+        "inflight": "בתהליך",
+        "applied": "נקלט"
+      },
+      "direction": {
+        "credit": "נכנס",
+        "debit": "יוצא"
+      },
+      "group": {
+        "transactionCount": "{{count}} תנועות"
+      }
+    },
+    "documents": {
+      "compliance": {
+        "title": "מסמכי ציות",
+        "subtitle": "מסמכים משפטיים וחוזיים לתמיכה בפתיחת חשבון הנאמנות"
+      },
+      "trustDetails": {
+        "title": "מסמכי פרטי הנאמנות",
+        "subtitle": "מסמכי תאגיד וזהות הקשורים להגדרת חשבון הנאמנות"
+      },
+      "emptyState": {
+        "title": "אין מסמכים עדיין",
+        "subtitle": "מסמכים שיועלו יופיעו כאן."
+      }
+    },
+    "purchases": {
+      "documents": "מסמכים",
+      "emptyDocuments": {
+        "title": "אין מסמכים",
+        "description": "מסמכים שמצורפים לרכישה זו יופיעו כאן."
+      }
+    },
+    "beneficiaries": {
+      "title": "נהנים",
+      "subtitle": "הצדדים ותפקידיהם (יזם, מוטבים, קונים)",
+      "addParty": "הוסף צד",
+      "tableActions": {
+        "edit": "עריכת פרטים",
+        "delete": "מחק נהנה"
+      },
+      "columns": {
+        "name": "שם",
+        "role": "תפקיד",
+        "idNumber": "מספר זהות / ח.פ",
+        "date": "תאריך לידה / תאריך התאגדות",
+        "address": "כתובת"
+      },
+      "placeholders": {
+        "name": "שם מלא",
+        "idNumber": "ת.ז / ח.פ",
+        "date": "בחר תאריך",
+        "address": "כתובת"
+      },
+      "roles": {
+        "developer": "יזם",
+        "buyer": "קונה"
+      }
+    }
+  }
+}

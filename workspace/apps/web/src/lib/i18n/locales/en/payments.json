@@ -1,0 +1,7 @@
+{
+  "receivedToast": {
+    "title": "Payment received in trust account \"{{trustName}}\"!",
+    "description": "{{name}} transferred {{amount}} · {{dateTime}}",
+    "close": "Close"
+  }
+}

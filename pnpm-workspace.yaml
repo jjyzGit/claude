@@ -1,0 +1,8 @@
+packages:
+  - 'workspace/apps/**/**/*'
+  - 'workspace/packages/**/*'
+  - 'workspace/tools/**/*'
+  - '!**/dist/**'
+
+ignoredBuiltDependencies:
+  - unrs-resolver

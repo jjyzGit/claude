@@ -1,0 +1,35 @@
+@import '@sollapay/ui';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 75%;
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 80%;
+  }
+}
+
+@media (min-width: 1440px) {
+  html {
+    font-size: 85%;
+  }
+}
+
+@media (min-width: 1728px) {
+  html {
+    font-size: 90%;
+  }
+}
+
+@media (min-width: 1920px) {
+  html {
+    font-size: 95%;
+  }
+}

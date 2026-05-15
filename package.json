@@ -1,0 +1,73 @@
+{
+  "name": "sollapay",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Sollapay monorepo built with Turborepo",
+  "keywords": [
+    "monorepo",
+    "turborepo",
+    "react",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sollapay/sollapay.git"
+  },
+  "scripts": {
+    "build": "turbo build",
+    "clean": "turbo clean",
+    "dev": "turbo dev",
+    "dev:apps": "node ./scripts/dev-apps.js",
+    "format": "sort-package-json && prettier --write \"**.+(js|json|md|yaml)\" && turbo run format --parallel",
+    "postinstall": "pnpm manypkg:check",
+    "lint": "turbo lint",
+    "lint:fix": "turbo lint:fix",
+    "manypkg:check": "manypkg check || exit 0",
+    "npkill": "npkill",
+    "pack": "turbo run pack",
+    "pipeline": "pipeline",
+    "type-check": "turbo type-check"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.8",
+    "@manypkg/cli": "^0.25.1",
+    "cross-env": "^10.1.0",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.2",
+    "eslint-plugin-prettier": "^5.5.4",
+    "npkill": "^0.12.2",
+    "prettier": "^3.7.4",
+    "sort-package-json": "^3.6.0",
+    "turbo": "^2.7.1",
+    "typescript": "^5.9.3"
+  },
+  "packageManager": "pnpm@10.26.2",
+  "engines": {
+    "node": ">=20.11.0",
+    "pnpm": ">=10.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "@hono/node-server@<1.19.10": "1.19.14",
+      "@types/pg": "8.11.10",
+      "@types/react": "^19.2.14",
+      "@types/react-dom": "^19.2.3",
+      "brace-expansion@>=2.0.0 <2.0.3": "2.0.3",
+      "brace-expansion@<1.1.13": "1.1.13",
+      "express-rate-limit@>=8.2.0 <8.2.2": "8.4.1",
+      "fast-xml-parser@>=5.0.0 <5.7.0": "5.7.0",
+      "flatted@<3.4.2": "3.4.2",
+      "hono@<4.12.4": "4.12.15",
+      "immutable@>=4.0.0 <4.3.8": "4.3.8",
+      "ip-address@<=10.1.0": "10.1.1",
+      "lodash@<4.18.0": "4.18.1",
+      "minimatch@>=10.0.0 <10.2.3": "10.2.5",
+      "path-to-regexp@>=8.0.0 <8.4.0": "8.4.2",
+      "path-to-regexp@<0.1.13": "0.1.13",
+      "pg": "8.17.2",
+      "picomatch@>=4.0.0 <4.0.4": "4.0.4",
+      "postcss@<8.5.10": "8.5.10",
+      "yaml@>=1.0.0 <1.10.3": "1.10.3"
+    }
+  }
+}

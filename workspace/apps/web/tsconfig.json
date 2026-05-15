@@ -1,0 +1,20 @@
+{
+  "extends": "@sollapay/tsconfig/react.json",
+  "include": [
+    "src",
+    "src/pages/TrustAccountListPage.tsx",
+    "src/pages/TrustAccountActivationPage.tsx",
+    "src/pages/TrustAccountViewPage.tsx",
+    "src/pages/DashboardPage.tsx"
+  ],
+  "references": [{"path": "./tsconfig.node.json"}],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/icons": ["../../packages/ui/src/icons"],
+      "@/icons/*": ["../../packages/ui/src/icons/*"],
+      "@/*": ["src/*"]
+    },
+    "customConditions": ["source"]
+  }
+}
