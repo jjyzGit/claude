@@ -20,13 +20,12 @@
 
   .container {
     width: 100%;
-    max-width: 760px;
+    max-width: 900px;
     display: flex;
     flex-direction: column;
     gap: 36px;
   }
 
-  /* Header */
   header {
     display: flex;
     align-items: flex-start;
@@ -74,9 +73,7 @@
 
   hr { border: none; border-top: 1px solid #21262d; }
 
-  /* Input controls */
   .inputs { display: flex; flex-direction: column; gap: 28px; }
-
   .input-group { display: flex; flex-direction: column; gap: 10px; }
 
   .input-label-row {
@@ -146,10 +143,48 @@
   input[type=number]:focus { border-color: #58a6ff; }
   input[type=number]::-webkit-inner-spin-button { opacity: 0.5; }
 
-  /* Results grid */
+  /* Founders row above results */
+  .founders-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .founders-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .founders-input-label {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #6e7681;
+  }
+
+  .founders-input-inner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .founders-input-inner input[type=number] {
+    width: 80px;
+  }
+
+  .founders-input-inner span {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #6e7681;
+  }
+
+  /* 4-column results */
   .results {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 16px;
   }
 
@@ -176,22 +211,24 @@
     margin-bottom: 14px;
   }
 
-  .card-label.ok   { color: #3fb950; }
-  .card-label.warn { color: #f85149; }
+  .card-label.ok      { color: #3fb950; }
+  .card-label.warn    { color: #f85149; }
   .card-label.neutral { color: #6e7681; }
+  .card-label.blue    { color: #58a6ff; }
 
   .card-number {
     font-family: 'Courier New', monospace;
-    font-size: 40px;
+    font-size: 36px;
     font-weight: 700;
     line-height: 1;
     margin-bottom: 8px;
     transition: color 0.2s;
   }
 
-  .card-number.ok   { color: #3fb950; }
-  .card-number.warn { color: #f85149; }
+  .card-number.ok      { color: #3fb950; }
+  .card-number.warn    { color: #f85149; }
   .card-number.neutral { color: #e6edf3; }
+  .card-number.blue    { color: #58a6ff; }
 
   .card-sub {
     font-family: 'Courier New', monospace;
@@ -219,9 +256,14 @@
     color: #8b949e;
   }
 
-  @media (max-width: 560px) {
+  @media (max-width: 700px) {
+    .results { grid-template-columns: 1fr 1fr; }
+    .founders-row { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 420px) {
     .results { grid-template-columns: 1fr; }
-    .card-number { font-size: 32px; }
+    .card-number { font-size: 28px; }
   }
 </style>
 </head>
@@ -249,7 +291,7 @@
       </div>
       <div class="slider-row">
         <input type="range" id="inv-slider" min="1" max="5" step="0.1" value="2.5">
-        <input type="number"  id="inv-input"  min="1" max="5" step="0.1" value="2.5">
+        <input type="number" id="inv-input" min="1" max="5" step="0.1" value="2.5">
       </div>
     </div>
 
@@ -260,7 +302,17 @@
       </div>
       <div class="slider-row">
         <input type="range" id="pm-slider" min="8" max="25" step="0.5" value="12">
-        <input type="number"  id="pm-input"  min="8" max="25" step="0.5" value="12">
+        <input type="number" id="pm-input" min="8" max="25" step="0.5" value="12">
+      </div>
+    </div>
+
+    <div class="founders-row">
+      <div class="founders-input-group">
+        <div class="founders-input-label">Founders Current Ownership</div>
+        <div class="founders-input-inner">
+          <input type="number" id="founders-input" min="1" max="99" step="0.1" value="65.3">
+          <span>% (pre-round)</span>
+        </div>
       </div>
     </div>
   </div>
@@ -272,6 +324,12 @@
       <div class="card-label neutral">Investor Ownership</div>
       <div class="card-number ok" id="ownership-num">20.8%</div>
       <div class="card-sub" id="ownership-sub">of $12.0M post-money</div>
+    </div>
+
+    <div class="result-card" id="card-founders">
+      <div class="card-label blue">Founders Post-Round</div>
+      <div class="card-number blue" id="founders-num">51.9%</div>
+      <div class="card-sub" id="founders-sub">was 65.3% pre-round</div>
     </div>
 
     <div class="result-card" id="card-premoney">
@@ -294,23 +352,26 @@
   const INV_MIN = 1, INV_MAX = 5, PM_MIN = 8, PM_MAX = 25;
   const CAP = 20;
 
-  const invSlider  = document.getElementById('inv-slider');
-  const invInput   = document.getElementById('inv-input');
-  const pmSlider   = document.getElementById('pm-slider');
-  const pmInput    = document.getElementById('pm-input');
+  const invSlider      = document.getElementById('inv-slider');
+  const invInput       = document.getElementById('inv-input');
+  const pmSlider       = document.getElementById('pm-slider');
+  const pmInput        = document.getElementById('pm-input');
+  const foundersInput  = document.getElementById('founders-input');
 
   function clamp(v, min, max) { return Math.min(max, Math.max(min, v)); }
   function fmt1(v) { return v.toFixed(1); }
 
   function update() {
-    const inv = parseFloat(invSlider.value);
-    const pm  = parseFloat(pmSlider.value);
+    const inv      = parseFloat(invSlider.value);
+    const pm       = parseFloat(pmSlider.value);
+    const foundersNow = clamp(parseFloat(foundersInput.value) || 65.3, 1, 99);
 
-    const ownership = (inv / pm) * 100;
-    const preMoney  = pm - inv;
-    const exceeded  = ownership > CAP;
+    const ownership       = (inv / pm) * 100;
+    const preMoney        = pm - inv;
+    const foundersAfter   = foundersNow * (1 - ownership / 100);
+    const exceeded        = ownership > CAP;
 
-    // Sync inputs
+    // Sync number inputs with sliders
     invInput.value = fmt1(inv);
     pmInput.value  = fmt1(pm);
 
@@ -324,13 +385,17 @@
     document.getElementById('badge-icon').textContent = exceeded ? '▲' : '●';
     document.getElementById('badge-text').textContent = exceeded ? 'EXCEEDS 20% CAP' : 'WITHIN LIMIT';
 
-    // Ownership card
+    // Investor ownership card
     const ownershipCard = document.getElementById('card-ownership');
     const ownershipNum  = document.getElementById('ownership-num');
     ownershipCard.className = `result-card ${exceeded ? 'ownership-warn' : 'ownership-ok'}`;
     ownershipNum.className  = `card-number ${exceeded ? 'warn' : 'ok'}`;
     ownershipNum.textContent = `${fmt1(ownership)}%`;
     document.getElementById('ownership-sub').textContent = `of $${fmt1(pm)}M post-money`;
+
+    // Founders card
+    document.getElementById('founders-num').textContent = `${fmt1(foundersAfter)}%`;
+    document.getElementById('founders-sub').textContent = `was ${fmt1(foundersNow)}% pre-round`;
 
     // Pre-money card
     document.getElementById('premoney-num').textContent = `$${fmt1(preMoney)}M`;
@@ -341,14 +406,14 @@
     const statusBody  = document.getElementById('status-body');
     statusCard.className  = `result-card ${exceeded ? 'status-warn' : 'status-ok'}`;
     statusTitle.className = `status-title ${exceeded ? 'warn' : 'ok'}`;
-    statusBody.textContent = exceeded
+    statusTitle.textContent = exceeded ? '⚠ DILUTION CAP BREACHED' : '✓ WITHIN CAP';
+    statusBody.textContent  = exceeded
       ? 'Investor ownership exceeds the 20% dilution threshold. Reduce the investment or increase the post-money valuation.'
       : 'Ownership is within the 20% dilution cap. The terms are acceptable.';
-    statusTitle.textContent = exceeded ? '⚠ DILUTION CAP BREACHED' : '✓ WITHIN CAP';
   }
 
-  invSlider.addEventListener('input', () => { invInput.value = invSlider.value; update(); });
-  pmSlider.addEventListener('input',  () => { pmInput.value  = pmSlider.value;  update(); });
+  invSlider.addEventListener('input',  () => { invInput.value = invSlider.value; update(); });
+  pmSlider.addEventListener('input',   () => { pmInput.value  = pmSlider.value;  update(); });
 
   invInput.addEventListener('change', () => {
     invSlider.value = fmt1(clamp(parseFloat(invInput.value) || INV_MIN, INV_MIN, INV_MAX));
@@ -358,6 +423,8 @@
     pmSlider.value = fmt1(clamp(parseFloat(pmInput.value) || PM_MIN, PM_MIN, PM_MAX));
     update();
   });
+  foundersInput.addEventListener('input',  update);
+  foundersInput.addEventListener('change', update);
 
   update();
 </script>
