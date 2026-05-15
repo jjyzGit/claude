@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dilution Calculator</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0a0c10;
+    color: #c9d1d9;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 48px 24px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 960px;
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+  }
+
+  header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .subtitle {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #6e7681;
+    margin-bottom: 6px;
+  }
+
+  h1 {
+    font-family: 'Courier New', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #e6edf3;
+  }
+
+  .badge {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .badge.ok   { background:#0d1f17; border-color:#238636; color:#3fb950; }
+  .badge.warn { background:#1f0d0d; border-color:#da3633; color:#f85149; }
+
+  hr { border: none; border-top: 1px solid #21262d; }
+
+  /* ── Inputs ─────────────────────────────────── */
+  .inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 32px;
+  }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+
+  .field-label {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #6e7681;
+  }
+
+  .field-inner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .field-inner input[type=number] {
+    flex: 1;
+    padding: 9px 12px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    color: #e6edf3;
+    font-family: 'Courier New', monospace;
+    font-size: 15px;
+    font-weight: 600;
+    outline: none;
+    transition: border-color 0.15s;
+    min-width: 0;
+  }
+  .field-inner input[type=number]:focus { border-color: #58a6ff; }
+  .field-inner input[type=number]::-webkit-inner-spin-button { opacity: 0.4; }
+
+  .field-unit {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #6e7681;
+    white-space: nowrap;
+  }
+
+  .field-hint {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    color: #484f58;
+    margin-top: 2px;
+  }
+
+  /* divider between sections */
+  .section-label {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #484f58;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #21262d;
+    grid-column: 1 / -1;
+    margin-top: 8px;
+  }
+
+  /* ── Results ─────────────────────────────────── */
+  .results {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    padding: 18px 16px;
+    border-radius: 8px;
+    border: 1px solid #21262d;
+    background: #161b22;
+    transition: border-color 0.2s;
+  }
+
+  .card.highlight      { border-color: #58a6ff; background: #0d1b2e; }
+  .card.c-ok           { border-color: #238636; }
+  .card.c-warn         { border-color: #da3633; }
+  .card.c-status-ok    { border-color: #238636; }
+  .card.c-status-warn  { border-color: #da3633; }
+
+  .card-label {
+    font-family: 'Courier New', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .card-label.neutral { color: #6e7681; }
+  .card-label.blue    { color: #58a6ff; }
+  .card-label.ok      { color: #3fb950; }
+  .card-label.warn    { color: #f85149; }
+
+  .card-num {
+    font-family: 'Courier New', monospace;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 6px;
+    transition: color 0.2s;
+  }
+  .card-num.blue    { color: #58a6ff; }
+  .card-num.ok      { color: #3fb950; }
+  .card-num.warn    { color: #f85149; }
+  .card-num.neutral { color: #e6edf3; }
+
+  .card-sub {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    color: #6e7681;
+    margin-top: auto;
+    line-height: 1.5;
+  }
+
+  /* status card */
+  .status-title {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .status-title.ok   { color: #3fb950; }
+  .status-title.warn { color: #f85149; }
+
+  .status-body {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    line-height: 1.6;
+    color: #8b949e;
+  }
+
+  @media (max-width: 780px) {
+    .results { grid-template-columns: repeat(3, 1fr); }
+    .inputs  { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 500px) {
+    .results { grid-template-columns: 1fr 1fr; }
+    .card-num { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div>
+      <div class="subtitle">Funding Round Simulation</div>
+      <h1>Dilution Calculator</h1>
+    </div>
+    <div class="badge ok" id="badge">
+      <span id="badge-icon">●</span>
+      <span id="badge-text">WITHIN LIMIT</span>
+    </div>
+  </header>
+
+  <hr>
+
+  <!-- ── Inputs ── -->
+  <div class="inputs">
+
+    <div class="section-label">Round terms</div>
+
+    <div class="field">
+      <div class="field-label">Investment Amount</div>
+      <div class="field-inner">
+        <input type="number" id="inv" value="2" min="0" step="0.1">
+        <span class="field-unit">$M</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Post-Money Valuation</div>
+      <div class="field-inner">
+        <input type="number" id="post" value="20" min="0" step="0.5">
+        <span class="field-unit">$M</span>
+      </div>
+    </div>
+
+    <div class="section-label">Cap table</div>
+
+    <div class="field">
+      <div class="field-label">Founders Current Ownership</div>
+      <div class="field-inner">
+        <input type="number" id="founders" value="65.3" min="0" max="99" step="0.1">
+        <span class="field-unit">%</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Pre-seed Pro-rata Participation</div>
+      <div class="field-inner">
+        <input type="number" id="prorata" value="100" min="0" max="100" step="1">
+        <span class="field-unit">%</span>
+      </div>
+      <div class="field-hint">Existing non-founder investors exercising their right to co-invest and maintain their stake.</div>
+    </div>
+
+  </div>
+
+  <hr>
+
+  <!-- ── Results ── -->
+  <div class="results">
+
+    <!-- Total Round -->
+    <div class="card highlight" id="card-round">
+      <div class="card-label blue">Total Round</div>
+      <div class="card-num blue" id="round-num">$2.0M</div>
+      <div class="card-sub" id="round-sub">lead + pro-rata co-invest</div>
+    </div>
+
+    <!-- Investor Ownership -->
+    <div class="card c-ok" id="card-inv-own">
+      <div class="card-label ok" id="inv-own-label">Investor Ownership</div>
+      <div class="card-num ok" id="inv-own-num">10.0%</div>
+      <div class="card-sub" id="inv-own-sub">of $20.0M post-money</div>
+    </div>
+
+    <!-- Founders post-round -->
+    <div class="card" id="card-founders">
+      <div class="card-label blue">Founders Post-Round</div>
+      <div class="card-num blue" id="founders-num">58.6%</div>
+      <div class="card-sub" id="founders-sub">was 65.3% pre-round</div>
+    </div>
+
+    <!-- Pre-money -->
+    <div class="card" id="card-premoney">
+      <div class="card-label neutral">Pre-Money Valuation</div>
+      <div class="card-num neutral" id="premoney-num">$18.0M</div>
+      <div class="card-sub">post-money − investment</div>
+    </div>
+
+    <!-- Status -->
+    <div class="card c-status-ok" id="card-status">
+      <div class="status-title ok" id="status-title">✓ WITHIN CAP</div>
+      <div class="status-body" id="status-body">Ownership is within the 20% dilution cap. The terms are acceptable.</div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  const CAP = 20;
+
+  const $ = id => document.getElementById(id);
+
+  function fmt1(v) { return v.toFixed(1); }
+  function fmt2(v) { return v.toFixed(2); }
+
+  function update() {
+    const lead      = parseFloat($('inv').value)     || 0;
+    const post      = parseFloat($('post').value)    || 0;
+    const foundersNow = parseFloat($('founders').value) || 0;
+    const proRataPct  = parseFloat($('prorata').value)  || 0;
+
+    if (post === 0) return;
+
+    // Core calc
+    const investorOwnership = (lead / post) * 100;          // new investor %
+    const preMoney          = post - lead;
+
+    // Pro-rata: existing non-founder investors invest proRataPct% of their rights
+    // Their rights = their_ownership% × lead (standard pro-rata formula)
+    const existingNonFounder = Math.max(0, 100 - foundersNow - investorOwnership); // approx
+    const proRataAmount      = (proRataPct / 100) * (existingNonFounder / 100) * lead;
+    const totalRound         = lead + proRataAmount;
+
+    // Founders post-round (diluted by investor + pro-rata participants)
+    const totalNewOwnership  = (totalRound / post) * 100;
+    const foundersAfter      = foundersNow * (1 - totalNewOwnership / 100);
+
+    const exceeded = investorOwnership > CAP;
+
+    // Badge
+    $('badge').className = `badge ${exceeded ? 'warn' : 'ok'}`;
+    $('badge-icon').textContent = exceeded ? '▲' : '●';
+    $('badge-text').textContent = exceeded ? 'EXCEEDS 20% CAP' : 'WITHIN LIMIT';
+
+    // Total round card
+    $('round-num').textContent = `$${fmt1(totalRound)}M`;
+    $('round-sub').textContent = proRataAmount > 0
+      ? `$${fmt1(lead)}M lead + $${fmt1(proRataAmount)}M pro-rata`
+      : 'lead only (0% pro-rata)';
+
+    // Investor ownership card
+    const oc = $('card-inv-own');
+    oc.className = `card ${exceeded ? 'c-warn' : 'c-ok'}`;
+    $('inv-own-label').className = `card-label ${exceeded ? 'warn' : 'ok'}`;
+    $('inv-own-num').className   = `card-num   ${exceeded ? 'warn' : 'ok'}`;
+    $('inv-own-num').textContent = `${fmt1(investorOwnership)}%`;
+    $('inv-own-sub').textContent = `of $${fmt1(post)}M post-money`;
+
+    // Founders card
+    $('founders-num').textContent = `${fmt1(foundersAfter)}%`;
+    $('founders-sub').textContent = `was ${fmt1(foundersNow)}% pre-round`;
+
+    // Pre-money
+    $('premoney-num').textContent = `$${fmt1(preMoney)}M`;
+
+    // Status card
+    $('card-status').className   = `card ${exceeded ? 'c-status-warn' : 'c-status-ok'}`;
+    $('status-title').className  = `status-title ${exceeded ? 'warn' : 'ok'}`;
+    $('status-title').textContent = exceeded ? '⚠ DILUTION CAP BREACHED' : '✓ WITHIN CAP';
+    $('status-body').textContent  = exceeded
+      ? 'Investor ownership exceeds the 20% dilution threshold. Reduce the investment or increase the post-money valuation.'
+      : 'Ownership is within the 20% dilution cap. The terms are acceptable.';
+  }
+
+  ['inv','post','founders','prorata'].forEach(id => {
+    $(id).addEventListener('input',  update);
+    $(id).addEventListener('change', update);
+  });
+
+  update();
+</script>
+</body>
+</html>
