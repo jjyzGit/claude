@@ -254,6 +254,15 @@
     </div>
 
     <div class="field">
+      <div class="field-label">SAFE Investment</div>
+      <div class="field-inner">
+        <input type="number" id="safe" value="0" min="0" step="0.1">
+        <span class="field-unit">$M</span>
+      </div>
+      <div class="field-hint">Previously raised SAFE notes converting in this round.</div>
+    </div>
+
+    <div class="field">
       <div class="field-label">Pre-Money Valuation</div>
       <div class="field-inner">
         <input type="number" id="pre" value="18" min="0" step="0.5">
@@ -342,20 +351,21 @@
 
   function update() {
     const lead      = parseFloat($('inv').value)     || 0;
+    const safe      = parseFloat($('safe').value)    || 0;
     const pre       = parseFloat($('pre').value)     || 0;
     const foundersNow = parseFloat($('founders').value) || 0;
     const proRataPct  = parseFloat($('prorata').value)  || 0;
 
-    if (pre + lead === 0) return;
+    if (pre + safe + lead === 0) return;
 
-    // Iterative solve: post = pre + lead + proRata, where proRata depends on post
-    let post = pre + lead;
+    // Iterative solve: post = pre + safe + lead + proRata, where proRata depends on post
+    let post = pre + safe + lead;
     let investorOwnership, existingNonFounder, proRataAmount, totalRound;
     for (let i = 0; i < 20; i++) {
       investorOwnership  = (lead / post) * 100;
       existingNonFounder = Math.max(0, 100 - foundersNow - investorOwnership);
       proRataAmount      = (proRataPct / 100) * (existingNonFounder / 100) * lead;
-      totalRound         = lead + proRataAmount;
+      totalRound         = safe + lead + proRataAmount;
       const next         = pre + totalRound;
       if (Math.abs(next - post) < 0.00001) { post = next; break; }
       post = next;
@@ -374,9 +384,11 @@
 
     // Total round card
     $('round-num').textContent = `$${fmt1(totalRound)}M`;
-    $('round-sub').textContent = proRataAmount > 0
-      ? `$${fmt1(lead)}M lead + $${fmt1(proRataAmount)}M pro-rata`
-      : 'lead only (0% pro-rata)';
+    const parts = [];
+    if (safe > 0) parts.push(`$${fmt1(safe)}M SAFE`);
+    parts.push(`$${fmt1(lead)}M lead`);
+    if (proRataAmount > 0) parts.push(`$${fmt1(proRataAmount)}M pro-rata`);
+    $('round-sub').textContent = parts.join(' + ');
 
     // Investor ownership card
     const oc = $('card-inv-own');
@@ -407,7 +419,7 @@
       : 'Ownership is within the 20% dilution cap. The terms are acceptable.';
   }
 
-  ['inv','pre','founders','prorata'].forEach(id => {
+  ['inv','safe','pre','founders','prorata'].forEach(id => {
     $(id).addEventListener('input',  update);
     $(id).addEventListener('change', update);
   });
